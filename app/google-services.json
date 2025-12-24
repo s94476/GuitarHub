@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "455338942364",
+    "project_id": "guitarhub-2aad9",
+    "storage_bucket": "guitarhub-2aad9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455338942364:android:6ae99590470cbe4f19b259",
+        "android_client_info": {
+          "package_name": "com.example.guitarhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Bu6PVQS-dT3NS2tr4aYYtv3pveLx6Kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
