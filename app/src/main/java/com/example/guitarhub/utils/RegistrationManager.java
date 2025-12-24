@@ -75,6 +75,12 @@ public class RegistrationManager {
 
     private void phaseFailed(String message)
     {
+        Log.e(TAG, "phaseFailed: registration failed: message: " + message);
+        registrationPhase = REGISTRATION_PHASE_VALIDATE_USER_INFO;
+        if (onResultCallback != null) {
+            onResultCallback.onResult(false, message);
+        }
+
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             user.delete();
@@ -109,7 +115,9 @@ public class RegistrationManager {
         else if(registrationPhase == REGISTRATION_PHASE_DONE)
         {
             Log.i(TAG, "executeNextPhase: Registration done");
-            onResultCallback.onResult(true, "Registration successful!");
+            if (onResultCallback != null) {
+                onResultCallback.onResult(true, "Registration successful!");
+            }
             auth.signOut();
 
         }
@@ -118,7 +126,7 @@ public class RegistrationManager {
     private void validateUserInfo() {
         Log.d(TAG, "Starting registration for email: " + email );
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)  ) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(fullName) || TextUtils.isEmpty(username) ) {
             Log.w(TAG, "Validation failed: missing fields");
             phaseFailed("Please fill in all fields");
             return;
@@ -165,4 +173,3 @@ public class RegistrationManager {
     }
 
 }
-
