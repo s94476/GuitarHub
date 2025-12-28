@@ -20,7 +20,8 @@ import com.example.guitarhub.utils.RegistrationManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etFullName;
+    private EditText etFirstName;
+    private EditText etLastName;
     private EditText etUsername;
     private EditText etEmail;
     private EditText etPassword;
@@ -37,7 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
-        etFullName = findViewById(R.id.et_full_name);
+        etFirstName = findViewById(R.id.et_first_name);
+        etLastName = findViewById(R.id.et_last_name);
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
@@ -55,7 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
         registrationManager.startRegistration(
                 etEmail.getText().toString(),
                 etPassword.getText().toString(),
-                etFullName.getText().toString(),
+                etFirstName.getText().toString(),
+                etLastName.getText().toString(),
                 etUsername.getText().toString(),
                 new RegistrationManager.OnResultCallback(){
                     @Override
