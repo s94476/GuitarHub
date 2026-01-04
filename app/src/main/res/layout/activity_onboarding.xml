@@ -50,6 +50,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_guitar_level" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search_music"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Search music genres"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_music_taste_label">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_music_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_music_taste"
         android:layout_width="0dp"
@@ -58,46 +77,7 @@
         app:singleSelection="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_music_taste_label">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_rock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rock"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_jazz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jazz"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_blues"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Blues"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_metal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Metal"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_classical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Classical"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_pop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pop"
-            style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-    </com.google.android.material.chip.ChipGroup>
+        app:layout_constraintTop_toBottomOf="@+id/til_search_music" />
 
     <Button
         android:id="@+id/btn_finish_onboarding"

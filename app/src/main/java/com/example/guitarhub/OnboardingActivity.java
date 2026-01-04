@@ -2,7 +2,10 @@ package com.example.guitarhub;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -15,15 +18,26 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OnboardingActivity extends AppCompatActivity {
 
+    private static final String TAG = "OnboardingActivity";
     private Spinner spinnerGuitarLevel;
+    private AutoCompleteTextView actvMusicSearch;
     private ChipGroup chipGroupMusicTaste;
     private Button btnFinishOnboarding;
+
+    private List<String> availableGenres = Arrays.asList("Rock", "Jazz", "Blues", "Metal", "Classical", "Pop", "Country", "Folk", "Reggae", "Electronic");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +51,13 @@ public class OnboardingActivity extends AppCompatActivity {
         });
 
         spinnerGuitarLevel = findViewById(R.id.spinner_guitar_level);
+        actvMusicSearch = findViewById(R.id.actv_music_search);
         chipGroupMusicTaste = findViewById(R.id.chip_group_music_taste);
         btnFinishOnboarding = findViewById(R.id.btn_finish_onboarding);
 
         setupSpinner();
-        
+        setupMusicSearch();
+
         btnFinishOnboarding.setOnClickListener(v -> {
             finishOnboarding();
         });
@@ -53,15 +69,40 @@ public class OnboardingActivity extends AppCompatActivity {
         spinnerGuitarLevel.setAdapter(adapter);
     }
 
+    private void setupMusicSearch() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, availableGenres);
+        actvMusicSearch.setAdapter(adapter);
+
+        actvMusicSearch.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedGenre = (String) parent.getItemAtPosition(position);
+            addChipToGroup(selectedGenre);
+            actvMusicSearch.setText("");
+        });
+    }
+
+    private void addChipToGroup(String genre) {
+        // Check if chip already exists
+        for (int i = 0; i < chipGroupMusicTaste.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupMusicTaste.getChildAt(i);
+            if (chip.getText().toString().equalsIgnoreCase(genre)) {
+                return;
+            }
+        }
+
+        Chip chip = new Chip(this);
+        chip.setText(genre);
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(v -> chipGroupMusicTaste.removeView(chip));
+        chipGroupMusicTaste.addView(chip);
+    }
+
     private void finishOnboarding() {
         String selectedLevel = spinnerGuitarLevel.getSelectedItem().toString();
-        
+
         List<String> selectedGenres = new ArrayList<>();
         for (int i = 0; i < chipGroupMusicTaste.getChildCount(); i++) {
             Chip chip = (Chip) chipGroupMusicTaste.getChildAt(i);
-            if (chip.isChecked()) {
-                selectedGenres.add(chip.getText().toString());
-            }
+            selectedGenres.add(chip.getText().toString());
         }
 
         if (selectedGenres.isEmpty()) {
@@ -69,13 +110,33 @@ public class OnboardingActivity extends AppCompatActivity {
             return;
         }
 
-        // Here you would typically save these preferences to Firestore or SharedPreferences
-        // For now, we'll just navigate to the main activity
-        
-        Toast.makeText(this, "Setup complete! Level: " + selectedLevel + ", Genres: " + selectedGenres, Toast.LENGTH_SHORT).show();
+        saveOnboardingData(selectedLevel, selectedGenres);
+    }
 
-        Intent intent = new Intent(OnboardingActivity.this, WelcomeActivity.class);
-        startActivity(intent);
-        finish();
+    private void saveOnboardingData(String level, List<String> genres) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Error: User not signed in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("guitarLevel", level);
+        data.put("musicTastes", genres);
+
+        FirebaseFirestore.getInstance().collection("users").document(user.getUid())
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Onboarding data saved successfully");
+                    Toast.makeText(OnboardingActivity.this, "Setup complete!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(OnboardingActivity.this, WelcomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error saving onboarding data", e);
+                    Toast.makeText(OnboardingActivity.this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

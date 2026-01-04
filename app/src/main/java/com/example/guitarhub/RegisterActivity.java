@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResult(boolean success, String message) {
                         if (success) {
                             Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                            // Navigate to OnboardingActivity instead of WelcomeActivity
+                            // Navigate to OnboardingActivity
                             Intent intent = new Intent(RegisterActivity.this, OnboardingActivity.class);
                             startActivity(intent);
                             finish();
