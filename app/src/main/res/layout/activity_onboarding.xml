@@ -11,36 +11,102 @@
         android:id="@+id/tv_onboarding_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to GuitarHub!"
+        android:text="Tell us about your guitar skills"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
-        android:id="@+id/tv_onboarding_desc"
-        android:layout_width="0dp"
+        android:id="@+id/tv_level_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="This is a one-time onboarding screen to help you get started with the app."
+        android:text="Guitar Level:"
         android:textSize="16sp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_title" />
+
+    <Spinner
+        android:id="@+id/spinner_guitar_level"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_level_label" />
+
+    <TextView
+        android:id="@+id/tv_music_taste_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferred Music Taste:"
+        android:textSize="16sp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_guitar_level" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_music_taste"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:singleSelection="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_music_taste_label">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_rock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rock"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_jazz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jazz"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_blues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blues"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_metal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Metal"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_classical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Classical"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pop"
+            style="@style/Widget.MaterialComponents.Chip.Filter" />
+
+    </com.google.android.material.chip.ChipGroup>
 
     <Button
         android:id="@+id/btn_finish_onboarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Started"
+        android:text="Complete Setup"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/chip_group_music_taste" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

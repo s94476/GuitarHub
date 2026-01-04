@@ -11,6 +11,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationManager {
     private static final String TAG = "RegistrationManager";
@@ -27,7 +31,8 @@ public class RegistrationManager {
 
 
     String email;
-    String fullName;
+    String firstName;
+    String lastName;
     String username;
     String password;
 
@@ -47,14 +52,16 @@ public class RegistrationManager {
 
     public void startRegistration(String email,
                                   String password,
-                                  String fullName,
+                                  String firstName,
+                                  String lastName,
                                   String username,
                                   OnResultCallback onResultCallback)
     {
         this.onResultCallback = onResultCallback;
         this.email = email;
         this.password = password;
-        this.fullName = fullName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
 
 
@@ -120,13 +127,16 @@ public class RegistrationManager {
             }
             auth.signOut();
 
+
         }
     }
+
+
 
     private void validateUserInfo() {
         Log.d(TAG, "Starting registration for email: " + email );
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(fullName) || TextUtils.isEmpty(username) ) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(username) ) {
             Log.w(TAG, "Validation failed: missing fields");
             phaseFailed("Please fill in all fields");
             return;
@@ -169,7 +179,26 @@ public class RegistrationManager {
 
 
     private void saveUserToFirestore() {
-        phaseDone();
+        Log.d(TAG, "Saving user to Firestore. UID: " + userId + ", First Name: " + firstName + ", Last Name: " + lastName + ", Username: " + username + ", Email: " + email);
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("firstName", firstName);
+        userMap.put("lastName", lastName);
+        userMap.put("username", username);
+        userMap.put("email", email);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(userId)
+                .set(userMap)
+                .addOnSuccessListener(aVoid -> {
+                    Log.i(TAG, "User document created in Firestore for UID: " + userId);
+                    phaseDone();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to save user data to Firestore", e);
+                    phaseFailed("Failed to save user data: " + e.getMessage());
+                });
+
     }
 
 }
