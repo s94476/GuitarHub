@@ -31,8 +31,8 @@ public class WelcomeActivity extends AppCompatActivity {
         
         Button loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(v -> {
-             // Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-             // startActivity(intent);
+             Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+             startActivity(intent);
         });
 
     }

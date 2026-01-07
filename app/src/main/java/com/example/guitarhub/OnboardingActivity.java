@@ -130,6 +130,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Onboarding data saved successfully");
                     Toast.makeText(OnboardingActivity.this, "Setup complete!", Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(OnboardingActivity.this, WelcomeActivity.class);
                     startActivity(intent);
                     finish();

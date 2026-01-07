@@ -125,7 +125,7 @@ public class RegistrationManager {
             if (onResultCallback != null) {
                 onResultCallback.onResult(true, "Registration successful!");
             }
-            auth.signOut();
+
 
 
         }
