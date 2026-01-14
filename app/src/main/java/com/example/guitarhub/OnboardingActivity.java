@@ -124,6 +124,7 @@ public class OnboardingActivity extends AppCompatActivity {
         Map<String, Object> data = new HashMap<>();
         data.put("guitarLevel", level);
         data.put("musicTastes", genres);
+        data.put("onboardingComplete", true);
 
         FirebaseFirestore.getInstance().collection("users").document(user.getUid())
                 .set(data, SetOptions.merge())

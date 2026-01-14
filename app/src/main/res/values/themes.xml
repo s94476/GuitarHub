@@ -3,6 +3,7 @@
     <style name="Base.Theme.GuitarHub" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
     <style name="Theme.GuitarHub" parent="Base.Theme.GuitarHub" />
