@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -16,21 +17,21 @@
             android:id="@+id/tv_song_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Song Title"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            tools:text="Song Title" />
 
         <TextView
             android:id="@+id/tv_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Artist" />
+            tools:text="Artist" />
 
         <TextView
             android:id="@+id/tv_recommended_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Recommended Level: Beginner" />
+            tools:text="Recommended Level: Beginner" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,28 +49,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Gain: 7/10" />
+                tools:text="Gain: 7/10" />
 
             <TextView
                 android:id="@+id/tv_treble"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Treble: 6/10" />
+                tools:text="Treble: 6/10" />
 
             <TextView
                 android:id="@+id/tv_bass"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Bass: 5/10" />
+                tools:text="Bass: 5/10" />
 
             <TextView
                 android:id="@+id/tv_middle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Middle: 8/10" />
+                tools:text="Middle: 8/10" />
         </LinearLayout>
 
         <TextView
@@ -77,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Amp: Fender '65 Twin Reverb" />
+            tools:text="Amp: Fender '65 Twin Reverb" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,14 +91,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Position: Bridge" />
+                tools:text="Position: Bridge" />
 
             <TextView
                 android:id="@+id/tv_tone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tone: 7/10" />
+                tools:text="Tone: 7/10" />
         </LinearLayout>
 
         <TextView
@@ -116,7 +117,7 @@
                 android:id="@+id/tv_effect_placeholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chorus: 5/10" />
+                tools:text="Chorus: 5/10" />
         </LinearLayout>
 
     </LinearLayout>
