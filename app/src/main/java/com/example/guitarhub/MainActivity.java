@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.nav_home) {
             selectedFragment = new HomeFragment();
+        } else if (item.getItemId() == R.id.nav_add_post) {
+            selectedFragment = new AddPostFragment();
         } else if (item.getItemId() == R.id.nav_profile) {
             selectedFragment = new ProfileFragment();
         }

@@ -58,19 +58,16 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Admin backdoor
-        if (password.equals("user1234")) {
-            startMainActivity(true);
-            return;
-        }
-
         // Perform Firebase authentication
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.i("LoginActivity", "signInWithEmail:success");
-                        startMainActivity(true);
+                        Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("LoginActivity", "signInWithEmail:failure", task.getException());
@@ -84,15 +81,5 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    private void startMainActivity(boolean sendToast) {
-        if(sendToast)
-            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-
-        // Navigate to MainActivity
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

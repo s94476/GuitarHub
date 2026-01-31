@@ -31,13 +31,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="Recommended Level: Beginner" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Amp Settings" />
+            android:text="Amp Settings"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,19 +107,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Effects" />
+            android:text="Effects"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <LinearLayout
             android:id="@+id/effects_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/tv_effect_placeholder"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_effect1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 tools:text="Chorus: 5/10" />
+            <TextView
+                android:id="@+id/tv_effect2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Delay: 3/10" />
+            <TextView
+                android:id="@+id/tv_effect3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Reverb: 8/10" />
+            <TextView
+                android:id="@+id/tv_effect4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Flanger: 2/10" />
         </LinearLayout>
 
     </LinearLayout>

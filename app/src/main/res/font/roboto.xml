@@ -4,12 +4,5 @@
         app:fontStyle="normal"
         app:fontWeight="400"
         app:font="@font/roboto_regular" />
-    <font
-        app:fontStyle="italic"
-        app:fontWeight="400"
-        app:font="@font/roboto_italic" />
-    <font
-        app:fontStyle="normal"
-        app:fontWeight="700"
-        app:font="@font/roboto_bold" />
+
 </font-family>
