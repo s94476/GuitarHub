@@ -27,12 +27,14 @@ public class WelcomeActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
             startActivity(intent);
+            finish();
         });
         
         Button loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(v -> {
              Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
              startActivity(intent);
+             finish();
         });
 
     }
