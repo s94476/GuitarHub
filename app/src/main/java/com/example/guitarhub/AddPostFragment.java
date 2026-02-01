@@ -2,6 +2,7 @@ package com.example.guitarhub;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +18,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.guitarhub.utils.Effect;
+import com.example.guitarhub.utils.Post;
+import com.example.guitarhub.utils.TimedEffect;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddPostFragment extends Fragment {
 
+    private static final String TAG = "AddPostFragment";
     private EditText etSongTitle, etArtist, etGain, etTreble, etBass, etMiddle, etAmpName, etTone;
     private Spinner spRecommendedLevel, spAmpPosition;
     private LinearLayout effectsContainer;
-    private List<EditText> effectLevelEditTexts = new ArrayList<>();
-    private List<EditText> timingEditTexts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -61,27 +69,96 @@ public class AddPostFragment extends Fragment {
         addEffectButton.setOnClickListener(v -> addEffectField());
 
         Button submitButton = view.findViewById(R.id.submit_post_button);
-        submitButton.setOnClickListener(v -> {
-            boolean allEffectsValid = true;
-            for (EditText effectLevelEditText : effectLevelEditTexts) {
-                if (effectLevelEditText.getVisibility() == View.VISIBLE && !validate(effectLevelEditText)) {
-                    allEffectsValid = false;
-                }
-            }
-
-            boolean allTimingsValid = true;
-            for (EditText timingEditText : timingEditTexts) {
-                if (timingEditText.getVisibility() == View.VISIBLE && !validateTiming(timingEditText)) {
-                    allTimingsValid = false;
-                }
-            }
-
-            if (validate(etGain) && validate(etTreble) && validate(etBass) && validate(etMiddle) && validate(etTone) && allEffectsValid && allTimingsValid) {
-                Toast.makeText(getContext(), "Submit button clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+        submitButton.setOnClickListener(v -> sendPost());
 
         return view;
+    }
+
+    private void sendPost() {
+        Log.d(TAG, "sendPost: start");
+        Post post = createPost();
+
+        if (post == null) {
+            Log.d(TAG, "sendPost: post creation failed, validation error.");
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts")
+                .add(post)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                    Toast.makeText(getContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null) {
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
+                    Toast.makeText(getContext(), "Error saving post: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+        Log.d(TAG, "sendPost: done");
+    }
+
+    private Post createPost() {
+        if (!validate(etSongTitle, false) || !validate(etArtist, false) || !validate(etGain, true) || !validate(etTreble, true) || !validate(etBass, true) || !validate(etMiddle, true) || !validate(etTone, true)) {
+            return null;
+        }
+
+        String songTitle = etSongTitle.getText().toString().trim();
+        String artist = etArtist.getText().toString().trim();
+        String recommendedLevel = spRecommendedLevel.getSelectedItem().toString();
+        String ampName = etAmpName.getText().toString().trim();
+        String ampPosition = spAmpPosition.getSelectedItem().toString();
+
+        int tone = Integer.parseInt(etTone.getText().toString().trim());
+        Effect gain = new Effect("gain", Integer.parseInt(etGain.getText().toString().trim()), 0);
+        Effect treble = new Effect("treble", Integer.parseInt(etTreble.getText().toString().trim()), 0);
+        Effect bass = new Effect("bass", Integer.parseInt(etBass.getText().toString().trim()), 0);
+        Effect middle = new Effect("middle", Integer.parseInt(etMiddle.getText().toString().trim()), 0);
+
+        List<Effect> effects = new ArrayList<>();
+        for (int i = 0; i < effectsContainer.getChildCount(); i++) {
+            LinearLayout effectWrapper = (LinearLayout) effectsContainer.getChildAt(i);
+            LinearLayout effectRow = (LinearLayout) effectWrapper.getChildAt(0);
+
+            EditText effectNameEt = (EditText) effectRow.getChildAt(0);
+            if (!validate(effectNameEt, false)) return null;
+            String effectName = effectNameEt.getText().toString().trim();
+
+            EditText effectLevelEt = (EditText) effectRow.getChildAt(1);
+            if (!validate(effectLevelEt, true)) return null;
+            int effectLevel = Integer.parseInt(effectLevelEt.getText().toString().trim());
+
+            CheckBox timingCb = (CheckBox) effectRow.getChildAt(2);
+            EditText timingEt = (EditText) effectWrapper.getChildAt(1);
+
+            if (timingCb.isChecked()) {
+                if (!validateTiming(timingEt)) return null;
+                int timingMs = Integer.parseInt(timingEt.getText().toString().trim());
+                effects.add(new TimedEffect(effectName, effectLevel, 0, timingMs));
+            } else {
+                effects.add(new Effect(effectName, effectLevel, 0));
+            }
+        }
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String ownerUid = "";
+        String ownerNickname = "";
+        if (user != null) {
+            ownerUid = user.getUid();
+            ownerNickname = user.getDisplayName();
+            if (TextUtils.isEmpty(ownerNickname)) {
+                ownerNickname = user.getEmail();
+            }
+        } else {
+            Toast.makeText(getContext(), "You must be logged in to post.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        Timestamp createdAt = Timestamp.now();
+
+        return new Post(songTitle, artist, recommendedLevel, gain, treble, bass, middle, ampName, ampPosition, tone, ownerUid, ownerNickname, createdAt, effects);
     }
 
     private void addEffectField() {
@@ -117,8 +194,6 @@ public class AddPostFragment extends Fragment {
 
         deleteButton.setOnClickListener(v -> {
             effectsContainer.removeView(effectWrapper);
-            effectLevelEditTexts.remove(effectLevel);
-            timingEditTexts.remove(timingEditText);
         });
 
         effectRow.addView(effectName);
@@ -130,26 +205,26 @@ public class AddPostFragment extends Fragment {
         effectWrapper.addView(timingEditText);
 
         effectsContainer.addView(effectWrapper);
-        effectLevelEditTexts.add(effectLevel);
-        timingEditTexts.add(timingEditText);
     }
 
-    private boolean validate(EditText editText) {
+    private boolean validate(EditText editText, boolean isNumeric) {
         String input = editText.getText().toString().trim();
         if (TextUtils.isEmpty(input)) {
             editText.setError("Field cannot be empty");
             return false;
         }
 
-        try {
-            int value = Integer.parseInt(input);
-            if (value < 0 || value > 10) {
-                editText.setError("Value must be between 0 and 10");
+        if (isNumeric) {
+            try {
+                int value = Integer.parseInt(input);
+                if (value < 0 || value > 10) {
+                    editText.setError("Value must be between 0 and 10");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                editText.setError("Invalid number");
                 return false;
             }
-        } catch (NumberFormatException e) {
-            editText.setError("Invalid number");
-            return false;
         }
 
         return true;
