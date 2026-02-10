@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.guitarhub.utils.Effect;
 import com.example.guitarhub.utils.Post;
-import com.example.guitarhub.utils.TimedEffect;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddPostFragment extends Fragment {
+public class  AddPostFragment extends Fragment {
 
     private static final String TAG = "AddPostFragment";
     private EditText etSongTitle, etArtist, etGain, etTreble, etBass, etMiddle, etAmpName, etTone;
@@ -54,7 +53,7 @@ public class AddPostFragment extends Fragment {
         effectsContainer = view.findViewById(R.id.effects_container);
 
         // Recommended Level Spinner
-        String[] levels = {"Beginner", "Intermediate", "Advanced"};
+        String[] levels = {"Beginner", "Novice", "Intermediate", "Advanced", "Expert"};
         ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, levels);
         levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spRecommendedLevel.setAdapter(levelAdapter);
@@ -89,15 +88,27 @@ public class AddPostFragment extends Fragment {
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                     Toast.makeText(getContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show();
-                    if (getActivity() != null) {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
+                    clearFields();
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding document", e);
                     Toast.makeText(getContext(), "Error saving post: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
         Log.d(TAG, "sendPost: done");
+    }
+
+    private void clearFields() {
+        etSongTitle.setText("");
+        etArtist.setText("");
+        spRecommendedLevel.setSelection(0);
+        etGain.setText("");
+        etTreble.setText("");
+        etBass.setText("");
+        etMiddle.setText("");
+        etAmpName.setText("");
+        spAmpPosition.setSelection(0);
+        etTone.setText("");
+        effectsContainer.removeAllViews();
     }
 
     private Post createPost() {
@@ -133,13 +144,13 @@ public class AddPostFragment extends Fragment {
             CheckBox timingCb = (CheckBox) effectRow.getChildAt(2);
             EditText timingEt = (EditText) effectWrapper.getChildAt(1);
 
+            Effect effect = new Effect(effectName, effectLevel, 0);
             if (timingCb.isChecked()) {
                 if (!validateTiming(timingEt)) return null;
                 int timingMs = Integer.parseInt(timingEt.getText().toString().trim());
-                effects.add(new TimedEffect(effectName, effectLevel, 0, timingMs));
-            } else {
-                effects.add(new Effect(effectName, effectLevel, 0));
+                effect.setTimingMs(timingMs);
             }
+            effects.add(effect);
         }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

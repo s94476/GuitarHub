@@ -4,6 +4,7 @@ public class Effect {
     private String name;
     private int intensity;
     private int timing;
+    private int timingMs; // Add this field
 
     public Effect() {}
 
@@ -35,5 +36,13 @@ public class Effect {
 
     public void setTiming(int timing) {
         this.timing = timing;
+    }
+
+    public int getTimingMs() {
+        return timingMs;
+    }
+
+    public void setTimingMs(int timingMs) {
+        this.timingMs = timingMs;
     }
 }
