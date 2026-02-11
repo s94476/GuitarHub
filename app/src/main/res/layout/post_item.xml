@@ -26,11 +26,18 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 tools:text="Song Title" />
 
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@android:drawable/btn_star" />
+
             <TextView
                 android:id="@+id/tv_posted_by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_toStartOf="@id/iv_favorite"
                 android:gravity="end"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 tools:text="Posted by: User" />

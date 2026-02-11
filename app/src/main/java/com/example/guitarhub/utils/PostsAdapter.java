@@ -3,6 +3,7 @@ package com.example.guitarhub.utils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,16 +12,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.guitarhub.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
     private List<Post> posts = new ArrayList<>();
+    private Set<String> favoritePostIds = new HashSet<>();
+    private OnFavoriteClickListener onFavoriteClickListener;
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-        // Use more specific change events if you can, but for simplicity, we\'ll use notifyDataSetChanged() here.
         notifyDataSetChanged();
+    }
+
+    public void setFavoritePostIds(List<String> favoritePostIds) {
+        this.favoritePostIds.clear();
+        if (favoritePostIds != null) {
+            this.favoritePostIds.addAll(favoritePostIds);
+        }
+        notifyDataSetChanged();
+    }
+
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(String postId, boolean isFavorite);
+    }
+
+    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.onFavoriteClickListener = listener;
     }
 
     @NonNull
@@ -71,6 +91,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 holder.effect4.setVisibility(View.VISIBLE);
             }
         }
+
+        boolean isFavorite = favoritePostIds.contains(post.getPostId());
+        holder.favoriteIcon.setSelected(isFavorite);
+
+        holder.favoriteIcon.setOnClickListener(v -> {
+            if (onFavoriteClickListener != null && post.getPostId() != null) {
+                boolean newFavoriteState = !isFavorite;
+                onFavoriteClickListener.onFavoriteClick(post.getPostId(), newFavoriteState);
+
+                if (newFavoriteState) {
+                    favoritePostIds.add(post.getPostId());
+                } else {
+                    favoritePostIds.remove(post.getPostId());
+                }
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -95,6 +132,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         TextView effect2;
         TextView effect3;
         TextView effect4;
+        ImageView favoriteIcon;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +151,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             effect2 = itemView.findViewById(R.id.tv_effect2);
             effect3 = itemView.findViewById(R.id.tv_effect3);
             effect4 = itemView.findViewById(R.id.tv_effect4);
+            favoriteIcon = itemView.findViewById(R.id.iv_favorite);
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.guitarhub.utils;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Exclude;
+
 import java.util.List;
 
 public class Post {
@@ -18,6 +20,8 @@ public class Post {
     private String ownerNickname;
     private Timestamp createdAt;
     private List<Effect> effects;
+    @Exclude
+    private String postId;
 
     public Post() {}
 
@@ -148,5 +152,13 @@ public class Post {
 
     public void setEffects(List<Effect> effects) {
         this.effects = effects;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }
