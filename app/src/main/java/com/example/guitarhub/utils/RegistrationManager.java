@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -159,7 +160,26 @@ public class RegistrationManager {
                             if (user != null) {
                                 userId = user.getUid();
                                 Log.i(TAG, "Firebase Auth registration successful. UID: " + userId);
-                                phaseDone();
+                                
+                                // Update display name
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(username)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d(TAG, "User profile updated.");
+                                                    phaseDone();
+                                                } else {
+                                                    Log.e(TAG, "Failed to update user profile", task.getException());
+                                                    // Continue anyway, as the account is created
+                                                    phaseDone();
+                                                }
+                                            }
+                                        });
                             } else {
                                 Log.e(TAG, "Firebase Auth registration succeeded but user is null");
                                 phaseFailed("user is null");

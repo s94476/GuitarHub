@@ -28,10 +28,11 @@
 
             <ImageView
                 android:id="@+id/iv_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-                android:src="@android:drawable/btn_star" />
+                android:src="@android:drawable/favorite_unselected"
+                android:padding="4dp"/>
 
             <TextView
                 android:id="@+id/tv_posted_by"

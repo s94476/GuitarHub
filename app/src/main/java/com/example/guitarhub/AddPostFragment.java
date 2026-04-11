@@ -34,6 +34,7 @@ public class  AddPostFragment extends Fragment {
     private EditText etSongTitle, etArtist, etGain, etTreble, etBass, etMiddle, etAmpName, etTone;
     private Spinner spRecommendedLevel, spAmpPosition;
     private LinearLayout effectsContainer;
+    private String currentUsername;
 
     @Nullable
     @Override
@@ -70,7 +71,22 @@ public class  AddPostFragment extends Fragment {
         Button submitButton = view.findViewById(R.id.submit_post_button);
         submitButton.setOnClickListener(v -> sendPost());
 
+        fetchCurrentUsername();
+
         return view;
+    }
+
+    private void fetchCurrentUsername() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseFirestore.getInstance().collection("users").document(user.getUid()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            currentUsername = documentSnapshot.getString("username");
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error fetching username", e));
+        }
     }
 
     private void sendPost() {
@@ -158,8 +174,12 @@ public class  AddPostFragment extends Fragment {
         String ownerNickname = "";
         if (user != null) {
             ownerUid = user.getUid();
-            ownerNickname = user.getDisplayName();
-            if (TextUtils.isEmpty(ownerNickname)) {
+            // Try Firestore username first, then Display Name, then Email
+            if (!TextUtils.isEmpty(currentUsername)) {
+                ownerNickname = currentUsername;
+            } else if (!TextUtils.isEmpty(user.getDisplayName())) {
+                ownerNickname = user.getDisplayName();
+            } else {
                 ownerNickname = user.getEmail();
             }
         } else {
