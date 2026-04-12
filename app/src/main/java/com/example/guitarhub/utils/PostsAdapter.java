@@ -1,9 +1,13 @@
 package com.example.guitarhub.utils;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,13 +26,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     private List<Post> allPosts = new ArrayList<>();
     private List<Post> filteredPosts = new ArrayList<>();
     private Set<String> favoritePostIds = new HashSet<>();
-    private OnFavoriteClickListener onFavoriteClickListener;
+    private OnPostInteractionListener onPostInteractionListener;
     private boolean showingFavoritesOnly = false;
     private String currentQuery = "";
+    private String currentUserId;
 
     public void setPosts(List<Post> posts) {
         this.allPosts = new ArrayList<>(posts);
         applyFilter();
+    }
+
+    public void setCurrentUserId(String userId) {
+        this.currentUserId = userId;
+        notifyDataSetChanged();
     }
 
     public void setFavoritePostIds(List<String> favoritePostIds) {
@@ -52,34 +62,36 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     private void applyFilter() {
         filteredPosts = allPosts.stream()
                 .filter(post -> {
-                    // Filter by favorites if active
                     if (showingFavoritesOnly && !favoritePostIds.contains(post.getPostId())) {
                         return false;
                     }
-                    
-                    // Filter by search query
                     if (currentQuery.isEmpty()) {
                         return true;
                     }
-                    
                     boolean matchSong = post.getSongTitle() != null && post.getSongTitle().toLowerCase().contains(currentQuery);
                     boolean matchArtist = post.getArtist() != null && post.getArtist().toLowerCase().contains(currentQuery);
                     boolean matchAmp = post.getAmpName() != null && post.getAmpName().toLowerCase().contains(currentQuery);
                     boolean matchUser = post.getOwnerNickname() != null && post.getOwnerNickname().toLowerCase().contains(currentQuery);
                     boolean matchGenre = post.getGenre() != null && post.getGenre().toLowerCase().contains(currentQuery);
-                    
                     return matchSong || matchArtist || matchAmp || matchUser || matchGenre;
+                })
+                .sorted((p1, p2) -> {
+                    int likes1 = p1.getLikedBy() != null ? p1.getLikedBy().size() : 0;
+                    int likes2 = p2.getLikedBy() != null ? p2.getLikedBy().size() : 0;
+                    return Integer.compare(likes2, likes1);
                 })
                 .collect(Collectors.toList());
         notifyDataSetChanged();
     }
 
-    public interface OnFavoriteClickListener {
+    public interface OnPostInteractionListener {
         void onFavoriteClick(String postId, boolean isFavorite);
+        void onLikeClick(String postId, boolean isLiked);
+        void onCommentSend(String postId, String commentText);
     }
 
-    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
-        this.onFavoriteClickListener = listener;
+    public void setOnPostInteractionListener(OnPostInteractionListener listener) {
+        this.onPostInteractionListener = listener;
     }
 
     @NonNull
@@ -106,14 +118,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         holder.ampPositionTextView.setText("Position: " + post.getAmpPosition());
         holder.toneTextView.setText("Tone: " + post.getTone() + "/10");
 
-        // Clear previous effects
         holder.effect1.setVisibility(View.GONE);
         holder.effect2.setVisibility(View.GONE);
         holder.effect3.setVisibility(View.GONE);
         holder.effect4.setVisibility(View.GONE);
 
         List<Effect> effects = post.getEffects();
-        if (effects != null && !effects.isEmpty()) {
+        if (effects != null) {
             if (effects.size() > 0) {
                 holder.effect1.setText(effects.get(0).getName() + ": " + effects.get(0).getIntensity() + "/10");
                 holder.effect1.setVisibility(View.VISIBLE);
@@ -133,25 +144,42 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         }
 
         boolean isFavorite = favoritePostIds.contains(post.getPostId());
-        holder.favoriteIcon.setSelected(isFavorite);
+        holder.favoriteIcon.setImageResource(isFavorite ? R.drawable.ic_star_filled : R.drawable.ic_star_empty);
 
         holder.favoriteIcon.setOnClickListener(v -> {
-            if (onFavoriteClickListener != null && post.getPostId() != null) {
-                boolean newFavoriteState = !isFavorite;
-                onFavoriteClickListener.onFavoriteClick(post.getPostId(), newFavoriteState);
+            if (onPostInteractionListener != null && post.getPostId() != null) {
+                onPostInteractionListener.onFavoriteClick(post.getPostId(), !isFavorite);
+            }
+        });
 
-                if (newFavoriteState) {
-                    favoritePostIds.add(post.getPostId());
-                } else {
-                    favoritePostIds.remove(post.getPostId());
-                }
-                
-                // If we are showing only favorites, removing a favorite should remove it from the view
-                if (showingFavoritesOnly && !newFavoriteState) {
-                    applyFilter();
-                } else {
-                    notifyItemChanged(holder.getAdapterPosition());
-                }
+        List<String> likedBy = post.getLikedBy();
+        boolean isLiked = currentUserId != null && likedBy != null && likedBy.contains(currentUserId);
+        holder.likeIcon.setImageResource(isLiked ? R.drawable.ic_heart_filled : R.drawable.ic_heart_empty);
+        holder.likesCountTextView.setText(String.valueOf(likedBy != null ? likedBy.size() : 0));
+
+        holder.likeLayout.setOnClickListener(v -> {
+            if (onPostInteractionListener != null && post.getPostId() != null) {
+                onPostInteractionListener.onLikeClick(post.getPostId(), !isLiked);
+            }
+        });
+
+        holder.commentsContainer.removeAllViews();
+        List<Comment> comments = post.getComments();
+        if (comments != null) {
+            for (Comment comment : comments) {
+                TextView tvComment = new TextView(holder.itemView.getContext());
+                tvComment.setText(comment.getUsername() + ": " + comment.getText());
+                tvComment.setPadding(0, 4, 0, 4);
+                tvComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                holder.commentsContainer.addView(tvComment);
+            }
+        }
+
+        holder.sendCommentButton.setOnClickListener(v -> {
+            String commentText = holder.commentEditText.getText().toString().trim();
+            if (!commentText.isEmpty() && onPostInteractionListener != null) {
+                onPostInteractionListener.onCommentSend(post.getPostId(), commentText);
+                holder.commentEditText.setText("");
             }
         });
     }
@@ -162,24 +190,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-
-        TextView songTextView;
-        TextView postedByTextView;
-        TextView artistTextView;
-        TextView genreTextView;
-        TextView recommendedLevelTextView;
-        TextView gainTextView;
-        TextView trebleTextView;
-        TextView bassTextView;
-        TextView middleTextView;
-        TextView ampNameTextView;
-        TextView ampPositionTextView;
-        TextView toneTextView;
-        TextView effect1;
-        TextView effect2;
-        TextView effect3;
-        TextView effect4;
-        ImageView favoriteIcon;
+        TextView songTextView, postedByTextView, artistTextView, genreTextView, recommendedLevelTextView;
+        TextView gainTextView, trebleTextView, bassTextView, middleTextView, ampNameTextView, ampPositionTextView, toneTextView;
+        TextView effect1, effect2, effect3, effect4;
+        ImageView favoriteIcon, likeIcon;
+        TextView likesCountTextView;
+        View likeLayout;
+        LinearLayout commentsContainer;
+        EditText commentEditText;
+        ImageButton sendCommentButton;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -200,6 +219,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             effect3 = itemView.findViewById(R.id.tv_effect3);
             effect4 = itemView.findViewById(R.id.tv_effect4);
             favoriteIcon = itemView.findViewById(R.id.iv_favorite);
+            likeLayout = itemView.findViewById(R.id.ll_like);
+            likeIcon = itemView.findViewById(R.id.iv_like);
+            likesCountTextView = itemView.findViewById(R.id.tv_likes_count);
+            commentsContainer = itemView.findViewById(R.id.comments_container);
+            commentEditText = itemView.findViewById(R.id.et_comment);
+            sendCommentButton = itemView.findViewById(R.id.btn_send_comment);
         }
     }
 }

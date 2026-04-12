@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.guitarhub.utils.Comment;
 import com.example.guitarhub.utils.Post;
 import com.example.guitarhub.utils.PostsAdapter;
 import com.example.guitarhub.utils.User;
@@ -27,7 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteClickListener {
+public class HomeFragment extends Fragment implements PostsAdapter.OnPostInteractionListener {
 
     private static final String TAG = "HomeFragment";
     private RecyclerView recyclerView;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
     private FirebaseUser currentUser;
     private SearchView searchView;
     private TabLayout tabLayout;
+    private String currentUsername;
 
     @Nullable
     @Override
@@ -46,20 +48,25 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        
         initRecyclerView(view);
         initSearchView(view);
         initTabs(view);
-        db = FirebaseFirestore.getInstance();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        
+        fetchCurrentUserData();
         fetchPosts();
-        fetchFavoritePosts();
     }
 
     private void initRecyclerView(@NonNull View view) {
         recyclerView = view.findViewById(R.id.recycler_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postsAdapter = new PostsAdapter();
-        postsAdapter.setOnFavoriteClickListener(this);
+        postsAdapter.setOnPostInteractionListener(this);
+        if (currentUser != null) {
+            postsAdapter.setCurrentUserId(currentUser.getUid());
+        }
         recyclerView.setAdapter(postsAdapter);
     }
 
@@ -100,36 +107,45 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
         });
     }
 
+    private void fetchCurrentUserData() {
+        if (currentUser != null) {
+            DocumentReference userRef = db.collection("users").document(currentUser.getUid());
+            userRef.addSnapshotListener((documentSnapshot, error) -> {
+                if (error != null) {
+                    Log.w(TAG, "Listen failed.", error);
+                    return;
+                }
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    User user = documentSnapshot.toObject(User.class);
+                    if (user != null) {
+                        currentUsername = user.getUsername();
+                        if (user.getFavoritePosts() != null) {
+                            postsAdapter.setFavoritePostIds(user.getFavoritePosts());
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     private void fetchPosts() {
         db.collection("posts")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+
+                    if (value != null) {
                         List<Post> posts = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (QueryDocumentSnapshot document : value) {
                             Post post = document.toObject(Post.class);
                             post.setPostId(document.getId());
                             posts.add(post);
                         }
                         postsAdapter.setPosts(posts);
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-    }
-
-    private void fetchFavoritePosts() {
-        if (currentUser != null) {
-            DocumentReference userRef = db.collection("users").document(currentUser.getUid());
-            userRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null && user.getFavoritePosts() != null) {
-                        postsAdapter.setFavoritePostIds(user.getFavoritePosts());
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -141,6 +157,27 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
             } else {
                 userRef.update("favoritePosts", FieldValue.arrayRemove(postId));
             }
+        }
+    }
+
+    @Override
+    public void onLikeClick(String postId, boolean isLiked) {
+        if (currentUser != null) {
+            DocumentReference postRef = db.collection("posts").document(postId);
+            if (isLiked) {
+                postRef.update("likedBy", FieldValue.arrayUnion(currentUser.getUid()));
+            } else {
+                postRef.update("likedBy", FieldValue.arrayRemove(currentUser.getUid()));
+            }
+        }
+    }
+
+    @Override
+    public void onCommentSend(String postId, String commentText) {
+        if (currentUser != null && currentUsername != null) {
+            DocumentReference postRef = db.collection("posts").document(postId);
+            Comment newComment = new Comment(currentUsername, commentText);
+            postRef.update("comments", FieldValue.arrayUnion(newComment));
         }
     }
 }

@@ -43,4 +43,13 @@ public class User {
     public void setFavoritePosts(List<String> favoritePosts) {
         this.favoritePosts = favoritePosts;
     }
+
+    // Adding getUsername as an alias for getNickname for consistency with previous edits
+    public String getUsername() {
+        return nickname;
+    }
+
+    public void setUsername(String username) {
+        this.nickname = username;
+    }
 }

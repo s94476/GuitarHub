@@ -28,11 +28,11 @@
 
             <ImageView
                 android:id="@+id/iv_favorite"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/favorite_selected"
-                android:padding="4dp"/>
+                android:src="@drawable/ic_star_empty"
+                android:padding="4dp" />
 
             <TextView
                 android:id="@+id/tv_posted_by"
@@ -172,6 +172,82 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 tools:text="Flanger: 2/10" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:id="@+id/ll_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
+
+                <TextView
+                    android:id="@+id/tv_likes_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    tools:text="0" />
+
+                <ImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_heart_empty" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Comments"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <LinearLayout
+            android:id="@+id/comments_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/et_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Add a comment..."
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/btn_send_comment"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_menu_send"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
     </LinearLayout>

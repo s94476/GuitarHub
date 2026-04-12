@@ -3,6 +3,7 @@ package com.example.guitarhub.utils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -21,6 +22,8 @@ public class Post {
     private String ownerNickname;
     private Timestamp createdAt;
     private List<Effect> effects;
+    private List<String> likedBy = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
     @Exclude
     private String postId;
 
@@ -42,6 +45,8 @@ public class Post {
         this.ownerNickname = ownerNickname;
         this.createdAt = createdAt;
         this.effects = effects;
+        this.likedBy = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public String getSongTitle() {
@@ -162,6 +167,22 @@ public class Post {
 
     public void setEffects(List<Effect> effects) {
         this.effects = effects;
+    }
+
+    public List<String> getLikedBy() {
+        return likedBy;
+    }
+
+    public void setLikedBy(List<String> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public String getPostId() {
