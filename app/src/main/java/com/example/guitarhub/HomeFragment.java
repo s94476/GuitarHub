@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.guitarhub.utils.Post;
 import com.example.guitarhub.utils.PostsAdapter;
 import com.example.guitarhub.utils.User;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,6 +34,8 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
     private PostsAdapter postsAdapter;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
+    private SearchView searchView;
+    private TabLayout tabLayout;
 
     @Nullable
     @Override
@@ -43,6 +47,8 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView(view);
+        initSearchView(view);
+        initTabs(view);
         db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         fetchPosts();
@@ -55,6 +61,43 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnFavoriteCli
         postsAdapter = new PostsAdapter();
         postsAdapter.setOnFavoriteClickListener(this);
         recyclerView.setAdapter(postsAdapter);
+    }
+
+    private void initSearchView(@NonNull View view) {
+        searchView = view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                postsAdapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                postsAdapter.filter(newText);
+                return false;
+            }
+        });
+    }
+
+    private void initTabs(@NonNull View view) {
+        tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    postsAdapter.setShowingFavoritesOnly(false);
+                } else if (tab.getPosition() == 1) {
+                    postsAdapter.setShowingFavoritesOnly(true);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 
     private void fetchPosts() {

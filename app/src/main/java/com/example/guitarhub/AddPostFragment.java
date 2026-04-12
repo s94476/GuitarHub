@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,21 +21,34 @@ import androidx.fragment.app.Fragment;
 
 import com.example.guitarhub.utils.Effect;
 import com.example.guitarhub.utils.Post;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class  AddPostFragment extends Fragment {
+public class AddPostFragment extends Fragment {
 
     private static final String TAG = "AddPostFragment";
     private EditText etSongTitle, etArtist, etGain, etTreble, etBass, etMiddle, etAmpName, etTone;
+    private AutoCompleteTextView actvGenre;
+    private ChipGroup chipGroupGenres;
     private Spinner spRecommendedLevel, spAmpPosition;
     private LinearLayout effectsContainer;
     private String currentUsername;
+
+    private List<String> availableGenres = Arrays.asList(
+            "Rock", "Jazz", "Blues", "Metal", "Classical", "Pop", "Country", "Folk", "Reggae", "Electronic",
+            "Punk", "Grunge", "Soul", "R&B", "Funk", "Disco", "Techno", "House", "Trance", "Dubstep",
+            "Ska", "Latin", "Salsa", "Bossa Nova", "Samba", "Bluegrass", "Gospel", "Opera", "Ambient", "Industrial",
+            "New Wave", "Synthpop", "Indie", "Alternative", "Psychedelic", "Progressive", "Hardcore", "Emo", "Rap", "Hip Hop",
+            "Trap", "Lo-fi", "K-pop", "J-pop", "Shoegaze", "Post-rock", "Math Rock", "Flamenco", "Klezmer", "Surf Rock"
+    );
 
     @Nullable
     @Override
@@ -43,6 +57,8 @@ public class  AddPostFragment extends Fragment {
 
         etSongTitle = view.findViewById(R.id.et_song_title);
         etArtist = view.findViewById(R.id.et_artist);
+        actvGenre = view.findViewById(R.id.actv_genre);
+        chipGroupGenres = view.findViewById(R.id.chip_group_genres);
         spRecommendedLevel = view.findViewById(R.id.sp_recommended_level);
         etGain = view.findViewById(R.id.et_gain);
         etTreble = view.findViewById(R.id.et_treble);
@@ -52,6 +68,8 @@ public class  AddPostFragment extends Fragment {
         spAmpPosition = view.findViewById(R.id.sp_amp_position);
         etTone = view.findViewById(R.id.et_tone);
         effectsContainer = view.findViewById(R.id.effects_container);
+
+        setupGenreSearch();
 
         // Recommended Level Spinner
         String[] levels = {"Beginner", "Novice", "Intermediate", "Advanced", "Expert"};
@@ -74,6 +92,26 @@ public class  AddPostFragment extends Fragment {
         fetchCurrentUsername();
 
         return view;
+    }
+
+    private void setupGenreSearch() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, availableGenres);
+        actvGenre.setAdapter(adapter);
+
+        actvGenre.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedGenre = (String) parent.getItemAtPosition(position);
+            setGenreChip(selectedGenre);
+            actvGenre.setText("");
+        });
+    }
+
+    private void setGenreChip(String genre) {
+        chipGroupGenres.removeAllViews();
+        Chip chip = new Chip(getContext());
+        chip.setText(genre);
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(v -> chipGroupGenres.removeView(chip));
+        chipGroupGenres.addView(chip);
     }
 
     private void fetchCurrentUsername() {
@@ -116,6 +154,7 @@ public class  AddPostFragment extends Fragment {
     private void clearFields() {
         etSongTitle.setText("");
         etArtist.setText("");
+        chipGroupGenres.removeAllViews();
         spRecommendedLevel.setSelection(0);
         etGain.setText("");
         etTreble.setText("");
@@ -132,8 +171,17 @@ public class  AddPostFragment extends Fragment {
             return null;
         }
 
+        if (chipGroupGenres.getChildCount() == 0) {
+            Toast.makeText(getContext(), "Please select a genre", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         String songTitle = etSongTitle.getText().toString().trim();
         String artist = etArtist.getText().toString().trim();
+        
+        Chip chip = (Chip) chipGroupGenres.getChildAt(0);
+        String genre = chip.getText().toString();
+
         String recommendedLevel = spRecommendedLevel.getSelectedItem().toString();
         String ampName = etAmpName.getText().toString().trim();
         String ampPosition = spAmpPosition.getSelectedItem().toString();
@@ -174,7 +222,6 @@ public class  AddPostFragment extends Fragment {
         String ownerNickname = "";
         if (user != null) {
             ownerUid = user.getUid();
-            // Try Firestore username first, then Display Name, then Email
             if (!TextUtils.isEmpty(currentUsername)) {
                 ownerNickname = currentUsername;
             } else if (!TextUtils.isEmpty(user.getDisplayName())) {
@@ -189,7 +236,7 @@ public class  AddPostFragment extends Fragment {
 
         Timestamp createdAt = Timestamp.now();
 
-        return new Post(songTitle, artist, recommendedLevel, gain, treble, bass, middle, ampName, ampPosition, tone, ownerUid, ownerNickname, createdAt, effects);
+        return new Post(songTitle, artist, genre, recommendedLevel, gain, treble, bass, middle, ampName, ampPosition, tone, ownerUid, ownerNickname, createdAt, effects);
     }
 
     private void addEffectField() {

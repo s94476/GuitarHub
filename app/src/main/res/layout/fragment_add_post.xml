@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,11 +22,30 @@
             android:layout_height="wrap_content"
             android:hint="Artist" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Genre (Select from list):" />
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Start typing genre..." />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_genres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:singleSelection="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android.gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView

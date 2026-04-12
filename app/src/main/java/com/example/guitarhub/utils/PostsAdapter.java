@@ -15,16 +15,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
-    private List<Post> posts = new ArrayList<>();
+    private List<Post> allPosts = new ArrayList<>();
+    private List<Post> filteredPosts = new ArrayList<>();
     private Set<String> favoritePostIds = new HashSet<>();
     private OnFavoriteClickListener onFavoriteClickListener;
+    private boolean showingFavoritesOnly = false;
+    private String currentQuery = "";
 
     public void setPosts(List<Post> posts) {
-        this.posts = posts;
-        notifyDataSetChanged();
+        this.allPosts = new ArrayList<>(posts);
+        applyFilter();
     }
 
     public void setFavoritePostIds(List<String> favoritePostIds) {
@@ -32,6 +36,41 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         if (favoritePostIds != null) {
             this.favoritePostIds.addAll(favoritePostIds);
         }
+        applyFilter();
+    }
+
+    public void setShowingFavoritesOnly(boolean favoritesOnly) {
+        this.showingFavoritesOnly = favoritesOnly;
+        applyFilter();
+    }
+
+    public void filter(String query) {
+        this.currentQuery = query != null ? query.toLowerCase() : "";
+        applyFilter();
+    }
+
+    private void applyFilter() {
+        filteredPosts = allPosts.stream()
+                .filter(post -> {
+                    // Filter by favorites if active
+                    if (showingFavoritesOnly && !favoritePostIds.contains(post.getPostId())) {
+                        return false;
+                    }
+                    
+                    // Filter by search query
+                    if (currentQuery.isEmpty()) {
+                        return true;
+                    }
+                    
+                    boolean matchSong = post.getSongTitle() != null && post.getSongTitle().toLowerCase().contains(currentQuery);
+                    boolean matchArtist = post.getArtist() != null && post.getArtist().toLowerCase().contains(currentQuery);
+                    boolean matchAmp = post.getAmpName() != null && post.getAmpName().toLowerCase().contains(currentQuery);
+                    boolean matchUser = post.getOwnerNickname() != null && post.getOwnerNickname().toLowerCase().contains(currentQuery);
+                    boolean matchGenre = post.getGenre() != null && post.getGenre().toLowerCase().contains(currentQuery);
+                    
+                    return matchSong || matchArtist || matchAmp || matchUser || matchGenre;
+                })
+                .collect(Collectors.toList());
         notifyDataSetChanged();
     }
 
@@ -52,11 +91,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        Post post = posts.get(position);
+        Post post = filteredPosts.get(position);
 
         holder.songTextView.setText(post.getSongTitle());
         holder.postedByTextView.setText("Posted by: " + post.getOwnerNickname());
         holder.artistTextView.setText(post.getArtist());
+        holder.genreTextView.setText("Genre: " + (post.getGenre() != null ? post.getGenre() : "N/A"));
         holder.recommendedLevelTextView.setText("Recommended Level: " + post.getRecommendedLevel());
         holder.gainTextView.setText("Gain: " + post.getGain().getIntensity() + "/10");
         holder.trebleTextView.setText("Treble: " + post.getTreble().getIntensity() + "/10");
@@ -105,14 +145,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 } else {
                     favoritePostIds.remove(post.getPostId());
                 }
-                notifyItemChanged(holder.getAdapterPosition());
+                
+                // If we are showing only favorites, removing a favorite should remove it from the view
+                if (showingFavoritesOnly && !newFavoriteState) {
+                    applyFilter();
+                } else {
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return filteredPosts.size();
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
@@ -120,6 +166,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         TextView songTextView;
         TextView postedByTextView;
         TextView artistTextView;
+        TextView genreTextView;
         TextView recommendedLevelTextView;
         TextView gainTextView;
         TextView trebleTextView;
@@ -139,6 +186,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             songTextView = itemView.findViewById(R.id.tv_song_title);
             postedByTextView = itemView.findViewById(R.id.tv_posted_by);
             artistTextView = itemView.findViewById(R.id.tv_artist);
+            genreTextView = itemView.findViewById(R.id.tv_genre);
             recommendedLevelTextView = itemView.findViewById(R.id.tv_recommended_level);
             gainTextView = itemView.findViewById(R.id.tv_gain);
             trebleTextView = itemView.findViewById(R.id.tv_treble);

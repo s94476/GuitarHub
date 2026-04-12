@@ -31,7 +31,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-                android:src="@android:drawable/favorite_unselected"
+                android:src="@drawable/favorite_selected"
                 android:padding="4dp"/>
 
             <TextView
@@ -49,6 +49,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Artist" />
+
+        <TextView
+            android:id="@+id/tv_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="Genre: Rock" />
 
         <TextView
             android:id="@+id/tv_recommended_level"

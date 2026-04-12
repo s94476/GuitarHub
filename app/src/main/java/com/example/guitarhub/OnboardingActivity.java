@@ -37,7 +37,13 @@ public class OnboardingActivity extends AppCompatActivity {
     private ChipGroup chipGroupMusicTaste;
     private Button btnFinishOnboarding;
 
-    private List<String> availableGenres = Arrays.asList("Rock", "Jazz", "Blues", "Metal", "Classical", "Pop", "Country", "Folk", "Reggae", "Electronic");
+    private List<String> availableGenres = Arrays.asList(
+            "Rock", "Jazz", "Blues", "Metal", "Classical", "Pop", "Country", "Folk", "Reggae", "Electronic",
+            "Punk", "Grunge", "Soul", "R&B", "Funk", "Disco", "Techno", "House", "Trance", "Dubstep",
+            "Ska", "Latin", "Salsa", "Bossa Nova", "Samba", "Bluegrass", "Gospel", "Opera", "Ambient", "Industrial",
+            "New Wave", "Synthpop", "Indie", "Alternative", "Psychedelic", "Progressive", "Hardcore", "Emo", "Rap", "Hip Hop",
+            "Trap", "Lo-fi", "K-pop", "J-pop", "Shoegaze", "Post-rock", "Math Rock", "Flamenco", "Klezmer", "Surf Rock"
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,6 +8,7 @@ import java.util.List;
 public class Post {
     private String songTitle;
     private String artist;
+    private String genre;
     private String recommendedLevel;
     private Effect gain;
     private Effect treble;
@@ -25,9 +26,10 @@ public class Post {
 
     public Post() {}
 
-    public Post(String songTitle, String artist, String recommendedLevel, Effect gain, Effect treble, Effect bass, Effect middle, String ampName, String ampPosition, int tone, String ownerUid, String ownerNickname, Timestamp createdAt, List<Effect> effects) {
+    public Post(String songTitle, String artist, String genre, String recommendedLevel, Effect gain, Effect treble, Effect bass, Effect middle, String ampName, String ampPosition, int tone, String ownerUid, String ownerNickname, Timestamp createdAt, List<Effect> effects) {
         this.songTitle = songTitle;
         this.artist = artist;
+        this.genre = genre;
         this.recommendedLevel = recommendedLevel;
         this.gain = gain;
         this.treble = treble;
@@ -56,6 +58,14 @@ public class Post {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getRecommendedLevel() {
