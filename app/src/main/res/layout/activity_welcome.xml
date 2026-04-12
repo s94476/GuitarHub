@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- LinearLayout: Root vertical layout for the welcome/onboarding screen -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,7 +12,7 @@
     android:paddingStart="32dp"
     android:paddingEnd="32dp">
 
-
+    <!-- ImageView: Large decorative icon displayed on the welcome screen -->
     <ImageView
         android:layout_marginTop="180dp"
         android:layout_width="200dp"
@@ -20,6 +21,7 @@
         app:tint="@color/purple_accent"
         android:src="@drawable/welcome_icon"/>
 
+    <!-- TextView: App slogan or welcome message placeholder -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +30,7 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-
+    <!-- Button: Navigation button that takes the user to the Login screen -->
     <Button
         android:layout_marginTop="220dp"
         android:id="@+id/login_btn"
@@ -40,6 +42,7 @@
         android:textSize="20dp"
         android:layout_gravity="center"/>
 
+    <!-- Button: Navigation button that takes the user to the Registration screen -->
     <Button
         android:id="@+id/Register_btn"
         android:layout_width="match_parent"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- RelativeLayout: Main layout for the entry activity, managing the fragment container and bottom navigation -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,12 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- FrameLayout: Area where different fragments (Home, Profile, etc.) are swapped in and out -->
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation" />
 
+    <!-- BottomNavigationView: Menu bar at the bottom for main app navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

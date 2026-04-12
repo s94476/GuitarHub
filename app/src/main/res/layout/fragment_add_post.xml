@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- ScrollView: Root container allowing the entire post creation form to be scrollable on smaller screens -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- LinearLayout: Vertical container for all post input fields -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- EditText: Input field for the song title -->
         <EditText
             android:id="@+id/et_song_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Song Title" />
 
+        <!-- EditText: Input field for the artist name -->
         <EditText
             android:id="@+id/et_artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Artist" />
 
+        <!-- TextView: Label for the genre selection section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Genre (Select from list):" />
 
+        <!-- AutoCompleteTextView: Input field with suggestions for selecting a genre -->
         <AutoCompleteTextView
             android:id="@+id/actv_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Start typing genre..." />
 
+        <!-- ChipGroup: Container for selectable genre tags -->
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_genres"
             android:layout_width="match_parent"
@@ -41,6 +48,7 @@
             android:layout_marginTop="4dp"
             app:singleSelection="true" />
 
+        <!-- LinearLayout: Row for selecting recommended guitar skill level -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,11 +56,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <!-- TextView: Label for the skill level spinner -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Recommended Level:" />
 
+            <!-- Spinner: Dropdown menu for choosing Beginner, Intermediate, etc. -->
             <Spinner
                 android:id="@+id/sp_recommended_level"
                 android:layout_width="0dp"
@@ -60,6 +70,7 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <!-- TextView: Section header for Amplifier settings -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,17 +78,20 @@
             android:text="Amp Settings"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
+        <!-- LinearLayout: Row containing Gain, Treble, Bass, and Middle input fields -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <!-- TextView: Label for Gain input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gain:" />
 
+            <!-- EditText: Numeric input for Gain setting (0-10) -->
             <EditText
                 android:id="@+id/et_gain"
                 android:layout_width="0dp"
@@ -86,11 +100,13 @@
                 android:hint="0/10"
                 android:inputType="number" />
 
+            <!-- TextView: Label for Treble input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Treble:" />
 
+            <!-- EditText: Numeric input for Treble setting (0-10) -->
             <EditText
                 android:id="@+id/et_treble"
                 android:layout_width="0dp"
@@ -99,11 +115,13 @@
                 android:hint="0/10"
                 android:inputType="number" />
 
+            <!-- TextView: Label for Bass input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bass:" />
 
+            <!-- EditText: Numeric input for Bass setting (0-10) -->
             <EditText
                 android:id="@+id/et_bass"
                 android:layout_width="0dp"
@@ -112,11 +130,13 @@
                 android:hint="0/10"
                 android:inputType="number" />
 
+            <!-- TextView: Label for Middle input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Middle:" />
 
+            <!-- EditText: Numeric input for Middle setting (0-10) -->
             <EditText
                 android:id="@+id/et_middle"
                 android:layout_width="0dp"
@@ -126,6 +146,7 @@
                 android:inputType="number" />
         </LinearLayout>
 
+        <!-- EditText: Input field for specifying the amplifier model -->
         <EditText
             android:id="@+id/et_amp_name"
             android:layout_width="match_parent"
@@ -133,6 +154,7 @@
             android:layout_marginTop="8dp"
             android:hint="Amp Name" />
 
+        <!-- LinearLayout: Row containing pickup position and tone knob settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -140,22 +162,26 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <!-- TextView: Label for pickup position spinner -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Position:" />
 
+            <!-- Spinner: Dropdown menu for choosing guitar pickup position -->
             <Spinner
                 android:id="@+id/sp_amp_position"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
+            <!-- TextView: Label for Tone input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tone:" />
 
+            <!-- EditText: Numeric input for Tone knob setting (0-10) -->
             <EditText
                 android:id="@+id/et_tone"
                 android:layout_width="0dp"
@@ -165,6 +191,7 @@
                 android:inputType="number" />
         </LinearLayout>
 
+        <!-- TextView: Section header for Effects pedal settings -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -172,12 +199,14 @@
             android:text="Effects"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
+        <!-- LinearLayout: Vertical container where effect input rows are dynamically added -->
         <LinearLayout
             android:id="@+id/effects_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+        <!-- Button: Action button to add a new effect input row to the container -->
         <Button
             android:id="@+id/add_effect_button"
             android:layout_width="wrap_content"
@@ -185,6 +214,7 @@
             android:layout_marginTop="8dp"
             android:text="Add Effect" />
 
+        <!-- Button: Final submission button to save and publish the post to Firestore -->
         <Button
             android:id="@+id/submit_post_button"
             android:layout_width="wrap_content"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- ConstraintLayout: Root layout for the registration screen, organizing user input fields -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +13,7 @@
     android:paddingBottom="16dp"
     tools:context=".RegisterActivity">
 
+    <!-- ImageButton: Navigation button to return to the previous screen -->
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -23,6 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- TextView: Screen title for account creation -->
     <TextView
         android:id="@+id/tv_register_title"
         android:layout_width="wrap_content"
@@ -36,6 +39,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <!-- EditText: Input field for the user's first name -->
     <EditText
         android:id="@+id/et_first_name"
         android:layout_width="0dp"
@@ -51,6 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
 
+    <!-- EditText: Input field for the user's last name -->
     <EditText
         android:id="@+id/et_last_name"
         android:layout_width="0dp"
@@ -66,6 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_first_name" />
 
+    <!-- EditText: Input field for the chosen username -->
     <EditText
         android:id="@+id/et_username"
         android:layout_width="0dp"
@@ -81,6 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_last_name" />
 
+    <!-- EditText: Input field for the user's email address -->
     <EditText
         android:id="@+id/et_email"
         android:layout_width="0dp"
@@ -96,6 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
+    <!-- EditText: Input field for setting the account password -->
     <EditText
         android:id="@+id/et_password"
         android:layout_width="0dp"
@@ -111,6 +119,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
+    <!-- Button: Submits registration data to create a new user account -->
     <Button
         android:id="@+id/btn_register"
         android:layout_width="0dp"

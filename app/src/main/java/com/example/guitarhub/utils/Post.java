@@ -6,29 +6,59 @@ import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model class representing a Post in the GuitarHub application.
+ * A post contains details about a guitar setup, including amp settings and effects.
+ */
 public class Post {
+    // Title of the song for which the setup was created
     private String songTitle;
+    // Name of the artist who performed the song
     private String artist;
+    // Genre of the music (e.g., Rock, Blues, Jazz)
     private String genre;
+    // Recommended skill level for this setup (e.g., Beginner, Intermediate, Expert)
     private String recommendedLevel;
+    
+    // Core amplifier settings represented as Effect objects
     private Effect gain;
     private Effect treble;
     private Effect bass;
     private Effect middle;
+    
+    // Name of the amplifier being modeled or used
     private String ampName;
+    // Position of the amplifier or microphone if applicable (e.g., Bridge, Neck)
     private String ampPosition;
+    // Overall tone setting of the amplifier
     private int tone;
+    
+    // The Firebase UID of the user who created this post
     private String ownerUid;
+    // The username/nickname of the user who created this post
     private String ownerNickname;
+    // The timestamp when the post was created in Firestore
     private Timestamp createdAt;
+    
+    // List of additional pedal effects used in the guitar setup
     private List<Effect> effects;
+    // List of user UIDs who have liked this specific post
     private List<String> likedBy = new ArrayList<>();
+    // List of comments associated with this post
     private List<Comment> comments = new ArrayList<>();
+    
+    // The document ID of this post in Firestore. Excluded from being written back to Firestore.
     @Exclude
     private String postId;
 
+    /**
+     * Default constructor required for Firestore's data mapping (toObject()).
+     */
     public Post() {}
 
+    /**
+     * Parameterized constructor used when initializing a new Post object before saving it to Firestore.
+     */
     public Post(String songTitle, String artist, String genre, String recommendedLevel, Effect gain, Effect treble, Effect bass, Effect middle, String ampName, String ampPosition, int tone, String ownerUid, String ownerNickname, Timestamp createdAt, List<Effect> effects) {
         this.songTitle = songTitle;
         this.artist = artist;
