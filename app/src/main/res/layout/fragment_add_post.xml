@@ -215,14 +215,30 @@
             android:layout_marginTop="8dp"
             android:text="Add Effect" />
 
-        <!-- Button: Final submission button to save and publish the post to Firestore -->
-        <Button
-            android:id="@+id/submit_post_button"
-            android:layout_width="wrap_content"
+        <!-- Container for AI and Submit buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:layout_marginTop="16dp"
-            android:text="Submit" />
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ai_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="AI Help"
+                app:icon="@drawable/ic_star_filled" />
+
+            <Button
+                android:id="@+id/submit_post_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

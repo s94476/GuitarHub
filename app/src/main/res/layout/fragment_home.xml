@@ -15,16 +15,36 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
-        <!-- SearchView: Search bar for filtering posts by song title, artist, amp, or genre -->
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+        <!-- Horizontal container for SearchView and AI button -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconifiedByDefault="false"
-            app:queryHint="Search songs, artists, amps, genres..."
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="8dp">
+
+            <!-- SearchView: Search bar for filtering posts by song title, artist, amp, or genre -->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search songs, artists, amps, genres..." />
+
+            <!-- AI Help Button: Triggers AI-assisted search/logic -->
+            <ImageButton
+                android:id="@+id/ai_search_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_star_filled"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="AI Help"
+                android:clickable="true"
+                android:focusable="true"
+                app:tint="@color/design_default_color_primary" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <!-- TabLayout: Tab bar for switching between 'All Posts' and 'Favorites' -->

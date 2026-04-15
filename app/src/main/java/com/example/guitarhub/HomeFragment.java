@@ -1,10 +1,13 @@
 package com.example.guitarhub;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.guitarhub.utils.Comment;
+import com.example.guitarhub.utils.GeminiManager;
 import com.example.guitarhub.utils.Post;
 import com.example.guitarhub.utils.PostsAdapter;
 import com.example.guitarhub.utils.User;
@@ -25,8 +29,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment implements PostsAdapter.OnPostInteractionListener {
 
@@ -38,6 +45,9 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnPostInterac
     private SearchView searchView;
     private TabLayout tabLayout;
     private String currentUsername;
+    private User userData;
+    private ImageButton aiSearchButton;
+    private List<Post> allPosts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -54,6 +64,10 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnPostInterac
         initRecyclerView(view);
         initSearchView(view);
         initTabs(view);
+        
+        // AI Search Button initialization
+        aiSearchButton = view.findViewById(R.id.ai_search_button);
+        aiSearchButton.setOnClickListener(v -> handleAiSearch());
         
         fetchCurrentUserData();
         fetchPosts();
@@ -107,6 +121,81 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnPostInterac
         });
     }
 
+    /**
+     * Handles the AI Search logic. 
+     * Analyzes user preferences and favorites to find the best matching post.
+     */
+    private void handleAiSearch() {
+        if (userData == null || allPosts.isEmpty()) {
+            Toast.makeText(getContext(), "Please wait for data to load...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        aiSearchButton.setEnabled(false);
+        Toast.makeText(getContext(), "AI is finding the best song for you...", Toast.LENGTH_SHORT).show();
+
+        // Collect information about user's favorites to understand their taste
+        List<Post> favoritePosts = allPosts.stream()
+                .filter(p -> (userData.getFavoritePosts() != null && userData.getFavoritePosts().contains(p.getPostId())) || 
+                            (p.getLikedBy() != null && p.getLikedBy().contains(currentUser.getUid())))
+                .collect(Collectors.toList());
+
+        StringBuilder promptBuilder = new StringBuilder();
+        promptBuilder.append("Based on the following user profile, find the single best song post from the provided list for them.\n\n");
+        promptBuilder.append("User Skill Level: ").append(userData.getGuitarLevel()).append("\n");
+        promptBuilder.append("User Preferred Genres: ").append(userData.getMusicTastes() != null ? userData.getMusicTastes().toString() : "None").append("\n\n");
+        
+        if (!favoritePosts.isEmpty()) {
+            promptBuilder.append("The user liked/favorited these types of posts recently:\n");
+            for (Post p : favoritePosts) {
+                promptBuilder.append("- ").append(p.getSongTitle()).append(" (Genre: ").append(p.getGenre()).append(")\n");
+            }
+            promptBuilder.append("\n");
+        }
+
+        promptBuilder.append("Available Posts to choose from:\n");
+        for (Post p : allPosts) {
+            promptBuilder.append("- Title: ").append(p.getSongTitle()).append(", Artist: ").append(p.getArtist()).append(", Genre: ").append(p.getGenre()).append(", Difficulty: ").append(p.getRecommendedLevel()).append("\n");
+        }
+
+        promptBuilder.append("\nGive high priority to Skill Level and Preferred Genres. Decision should be based on similarity to their favorite genres and appropriate difficulty.");
+        promptBuilder.append("\nReturn ONLY a JSON object with keys: 'songTitle' and 'artist'. No other text.");
+
+        GeminiManager.getInstance().sendText(promptBuilder.toString(), getContext(), new GeminiManager.GeminiCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if (!isAdded()) return;
+                aiSearchButton.setEnabled(true);
+                try {
+                    String jsonStr = result.trim();
+                    if (jsonStr.startsWith("```json")) jsonStr = jsonStr.substring(7, jsonStr.length() - 3).trim();
+                    else if (jsonStr.startsWith("```")) jsonStr = jsonStr.substring(3, jsonStr.length() - 3).trim();
+                    
+                    JSONObject json = new JSONObject(jsonStr);
+                    String song = json.getString("songTitle");
+                    String artist = json.getString("artist");
+
+                    // Filter the feed by the AI's recommendation
+                    // As requested: Show the song name exactly as it is in Firebase (keeping spaces)
+                    searchView.setQuery(song, true);
+                    
+                    Toast.makeText(getContext(), "AI recommends: " + song + " by " + artist, Toast.LENGTH_LONG).show();
+
+                } catch (Exception e) {
+                    Log.e(TAG, "AI Search failed", e);
+                    Toast.makeText(getContext(), "AI couldn't find a match this time.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                if (!isAdded()) return;
+                aiSearchButton.setEnabled(true);
+                Toast.makeText(getContext(), "AI Search error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void fetchCurrentUserData() {
         if (currentUser != null) {
             DocumentReference userRef = db.collection("users").document(currentUser.getUid());
@@ -116,11 +205,11 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnPostInterac
                     return;
                 }
                 if (documentSnapshot != null && documentSnapshot.exists()) {
-                    User user = documentSnapshot.toObject(User.class);
-                    if (user != null) {
-                        currentUsername = user.getUsername();
-                        if (user.getFavoritePosts() != null) {
-                            postsAdapter.setFavoritePostIds(user.getFavoritePosts());
+                    userData = documentSnapshot.toObject(User.class);
+                    if (userData != null) {
+                        currentUsername = userData.getUsername();
+                        if (userData.getFavoritePosts() != null) {
+                            postsAdapter.setFavoritePostIds(userData.getFavoritePosts());
                         }
                     }
                 }
@@ -137,13 +226,13 @@ public class HomeFragment extends Fragment implements PostsAdapter.OnPostInterac
                     }
 
                     if (value != null) {
-                        List<Post> posts = new ArrayList<>();
+                        allPosts.clear();
                         for (QueryDocumentSnapshot document : value) {
                             Post post = document.toObject(Post.class);
                             post.setPostId(document.getId());
-                            posts.add(post);
+                            allPosts.add(post);
                         }
-                        postsAdapter.setPosts(posts);
+                        postsAdapter.setPosts(allPosts);
                     }
                 });
     }
