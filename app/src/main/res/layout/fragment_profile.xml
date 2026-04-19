@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
     android:paddingTop="24dp">
 
     <!-- ScrollView: Allows the profile header to scroll if content exceeds screen height -->
@@ -24,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/purple_dark"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
@@ -40,7 +42,8 @@
                         android:text="Username"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black" />
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/tv_email"
@@ -48,12 +51,14 @@
                         android:layout_height="wrap_content"
                         android:text="email@example.com"
                         android:textSize="16sp"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/purple_light" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#DDDDDD"
+                        android:background="@color/purple_medium"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp" />
 
@@ -78,19 +83,22 @@
                                 android:text="0"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
-                                android:textColor="@android:color/black" />
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Likes Received"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/purple_light" />
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="#DDDDDD" />
+                            android:background="@color/purple_medium" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -106,19 +114,22 @@
                                 android:text="0"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
-                                android:textColor="@android:color/black" />
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Comments"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/purple_light" />
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="#DDDDDD" />
+                            android:background="@color/purple_medium" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -134,13 +145,16 @@
                                 android:text="0"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
-                                android:textColor="@android:color/black" />
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="My Posts"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/purple_light" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -156,7 +170,9 @@
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Change Password" />
+                            android:text="Change Password"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/purple_accent" />
 
                         <Button
                             android:id="@+id/btn_logout"
@@ -164,7 +180,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Logout"
-                            android:textColor="@android:color/holo_red_dark" />
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
@@ -176,6 +193,10 @@
                 android:id="@+id/profile_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/black"
+                app:tabTextColor="@color/purple_light"
+                app:tabSelectedTextColor="@color/white"
+                app:tabIndicatorColor="@color/purple_accent"
                 app:tabGravity="fill"
                 app:tabMode="fixed">
 
@@ -202,6 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@color/black"
                 android:nestedScrollingEnabled="false" />
 
         </LinearLayout>

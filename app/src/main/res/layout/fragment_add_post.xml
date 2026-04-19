@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:paddingTop="24dp">
 
     <!-- LinearLayout: Vertical container for all post input fields -->
@@ -18,28 +19,39 @@
             android:id="@+id/et_song_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Song Title" />
+            android:hint="Song Title"
+            android:textColorHint="@color/purple_light"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/purple_accent" />
 
         <!-- EditText: Input field for the artist name -->
         <EditText
             android:id="@+id/et_artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Artist" />
+            android:hint="Artist"
+            android:textColorHint="@color/purple_light"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/purple_accent" />
 
         <!-- TextView: Label for the genre selection section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Genre (Select from list):" />
+            android:text="Genre (Select from list):"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium" />
 
         <!-- AutoCompleteTextView: Input field with suggestions for selecting a genre -->
         <AutoCompleteTextView
             android:id="@+id/actv_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Start typing genre..." />
+            android:hint="Start typing genre..."
+            android:textColorHint="@color/purple_light"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/purple_accent" />
 
         <!-- ChipGroup: Container for selectable genre tags -->
         <com.google.android.material.chip.ChipGroup
@@ -61,14 +73,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Recommended Level:" />
+                android:text="Recommended Level:"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium" />
 
             <!-- Spinner: Dropdown menu for choosing Beginner, Intermediate, etc. -->
             <Spinner
                 android:id="@+id/sp_recommended_level"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                android:backgroundTint="@color/purple_accent" />
         </LinearLayout>
 
         <!-- TextView: Section header for Amplifier settings -->
@@ -77,6 +93,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Amp Settings"
+            android:textColor="@color/purple_accent"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-black"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <!-- LinearLayout: Row containing Gain, Treble, Bass, and Middle input fields -->
@@ -90,7 +109,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gain:" />
+                android:text="Gain:"
+                android:textColor="@color/white" />
 
             <!-- EditText: Numeric input for Gain setting (0-10) -->
             <EditText
@@ -99,13 +119,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
+                android:textColorHint="@color/purple_light"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
 
             <!-- TextView: Label for Treble input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Treble:" />
+                android:text="Treble:"
+                android:textColor="@color/white" />
 
             <!-- EditText: Numeric input for Treble setting (0-10) -->
             <EditText
@@ -114,13 +138,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
+                android:textColorHint="@color/purple_light"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
 
             <!-- TextView: Label for Bass input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bass:" />
+                android:text="Bass:"
+                android:textColor="@color/white" />
 
             <!-- EditText: Numeric input for Bass setting (0-10) -->
             <EditText
@@ -129,13 +157,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
+                android:textColorHint="@color/purple_light"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
 
             <!-- TextView: Label for Middle input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Middle:" />
+                android:text="Middle:"
+                android:textColor="@color/white" />
 
             <!-- EditText: Numeric input for Middle setting (0-10) -->
             <EditText
@@ -144,6 +176,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
+                android:textColorHint="@color/purple_light"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -153,7 +188,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Amp Name" />
+            android:hint="Amp Name"
+            android:textColorHint="@color/purple_light"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/purple_accent" />
 
         <!-- LinearLayout: Row containing pickup position and tone knob settings -->
         <LinearLayout
@@ -167,20 +205,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Position:" />
+                android:text="Position:"
+                android:textColor="@color/white" />
 
             <!-- Spinner: Dropdown menu for choosing guitar pickup position -->
             <Spinner
                 android:id="@+id/sp_amp_position"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                android:backgroundTint="@color/purple_accent" />
 
             <!-- TextView: Label for Tone input -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tone:" />
+                android:text="Tone:"
+                android:textColor="@color/white" />
 
             <!-- EditText: Numeric input for Tone knob setting (0-10) -->
             <EditText
@@ -189,6 +231,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
+                android:textColorHint="@color/purple_light"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -198,6 +243,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Effects"
+            android:textColor="@color/purple_accent"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-black"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <!-- LinearLayout: Vertical container where effect input rows are dynamically added -->
@@ -213,7 +261,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Add Effect" />
+            android:text="Add Effect"
+            android:backgroundTint="@color/purple_dark"
+            android:textColor="@color/white" />
 
         <!-- Container for AI and Submit buttons -->
         <LinearLayout
@@ -230,13 +280,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="AI Help"
+                android:textColor="@color/purple_accent"
+                app:strokeColor="@color/purple_accent"
+                app:iconTint="@color/purple_accent"
                 app:icon="@drawable/ic_star_filled" />
 
             <Button
                 android:id="@+id/submit_post_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit" />
+                android:text="Submit"
+                android:backgroundTint="@color/purple_accent"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

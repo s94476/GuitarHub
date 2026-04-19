@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
     android:paddingTop="24dp">
 
     <!-- CardView: Provides a rounded, elevated container for the search bar -->
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
+        app:cardBackgroundColor="@color/purple_dark"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -30,7 +32,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:iconifiedByDefault="false"
-                app:queryHint="Search songs, artists, amps, genres..." />
+                app:queryHint="Search songs, artists, amps, genres..."
+                app:searchHintIcon="@null"
+                app:searchIcon="@null"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
             <!-- AI Help Button: Triggers AI-assisted search/logic -->
             <ImageButton
@@ -42,7 +47,7 @@
                 android:contentDescription="AI Help"
                 android:clickable="true"
                 android:focusable="true"
-                app:tint="@color/design_default_color_primary" />
+                app:tint="@color/purple_accent" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -52,6 +57,10 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:tabTextColor="@color/purple_light"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@color/purple_accent"
         app:tabGravity="fill"
         app:tabMode="fixed">
 
@@ -75,6 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/black"
         android:clipToPadding="false"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
     <!-- FrameLayout: Area where different fragments (Home, Profile, etc.) are swapped in and out -->
@@ -20,6 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/black"
+        app:itemIconTint="@color/purple_accent"
+        app:itemTextColor="@color/purple_light"
+        app:backgroundTint="@color/black"
         app:menu="@menu/bottom_navigation_menu" />
 
 </RelativeLayout>
