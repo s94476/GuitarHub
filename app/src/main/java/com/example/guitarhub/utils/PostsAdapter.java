@@ -158,35 +158,38 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         holder.ampPositionTextView.setText("Position: " + post.getAmpPosition());
         holder.toneTextView.setText("Tone: " + post.getTone() + "/10");
 
-        // Dynamically show/hide effect fields based on availability
-        holder.effect1.setVisibility(View.GONE);
-        holder.effect2.setVisibility(View.GONE);
-        holder.effect3.setVisibility(View.GONE);
-        holder.effect4.setVisibility(View.GONE);
+        // Dynamically show/hide effect fields and headers based on availability
+        holder.llEffect1.setVisibility(View.GONE);
+        holder.llEffect2.setVisibility(View.GONE);
+        holder.llEffect3.setVisibility(View.GONE);
+        holder.llEffect4.setVisibility(View.GONE);
 
         List<Effect> effects = post.getEffects();
-        if (effects != null) {
+        if (effects != null && !effects.isEmpty()) {
+            holder.effectsTitle.setVisibility(View.VISIBLE);
             if (effects.size() > 0) {
-                holder.effect1.setText(effects.get(0).getName() + ": " + effects.get(0).getIntensity() + "/10");
-                holder.effect1.setVisibility(View.VISIBLE);
+                holder.tvEffect1.setText(effects.get(0).getName() + ": " + effects.get(0).getIntensity() + "/10");
+                holder.llEffect1.setVisibility(View.VISIBLE);
             }
             if (effects.size() > 1) {
-                holder.effect2.setText(effects.get(1).getName() + ": " + effects.get(1).getIntensity() + "/10");
-                holder.effect2.setVisibility(View.VISIBLE);
+                holder.tvEffect2.setText(effects.get(1).getName() + ": " + effects.get(1).getIntensity() + "/10");
+                holder.llEffect2.setVisibility(View.VISIBLE);
             }
             if (effects.size() > 2) {
-                holder.effect3.setText(effects.get(2).getName() + ": " + effects.get(2).getIntensity() + "/10");
-                holder.effect3.setVisibility(View.VISIBLE);
+                holder.tvEffect3.setText(effects.get(2).getName() + ": " + effects.get(2).getIntensity() + "/10");
+                holder.llEffect3.setVisibility(View.VISIBLE);
             }
             if (effects.size() > 3) {
-                holder.effect4.setText(effects.get(3).getName() + ": " + effects.get(3).getIntensity() + "/10");
-                holder.effect4.setVisibility(View.VISIBLE);
+                holder.tvEffect4.setText(effects.get(3).getName() + ": " + effects.get(3).getIntensity() + "/10");
+                holder.llEffect4.setVisibility(View.VISIBLE);
             }
+        } else {
+            holder.effectsTitle.setVisibility(View.GONE);
         }
 
-        // Handle favorite button state and click
+        // Handle favorite button state and click - Star icon
         boolean isFavorite = favoritePostIds.contains(post.getPostId());
-        holder.favoriteIcon.setImageResource(isFavorite ? R.drawable.ic_star_filled : R.drawable.ic_star_empty);
+        holder.favoriteIcon.setImageResource(isFavorite ? R.drawable.ic_star_selected_no_background : R.drawable.ic_star_unselected_no_background);
 
         holder.favoriteIcon.setOnClickListener(v -> {
             if (onPostInteractionListener != null && post.getPostId() != null) {
@@ -194,10 +197,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             }
         });
 
-        // Handle like button state and click
+        // Handle like button state and click - Heart icon
         List<String> likedBy = post.getLikedBy();
         boolean isLiked = currentUserId != null && likedBy != null && likedBy.contains(currentUserId);
-        holder.likeIcon.setImageResource(isLiked ? R.drawable.ic_heart_filled : R.drawable.ic_heart_empty);
+        holder.likeIcon.setImageResource(isLiked ? R.drawable.ic_heart_selected_no_background : R.drawable.ic_heart_unselected_no_background);
         holder.likesCountTextView.setText(String.valueOf(likedBy != null ? likedBy.size() : 0));
 
         holder.likeLayout.setOnClickListener(v -> {
@@ -240,7 +243,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     static class PostViewHolder extends RecyclerView.ViewHolder {
         TextView songTextView, postedByTextView, artistTextView, genreTextView, recommendedLevelTextView;
         TextView gainTextView, trebleTextView, bassTextView, middleTextView, ampNameTextView, ampPositionTextView, toneTextView;
-        TextView effect1, effect2, effect3, effect4;
+        TextView tvEffect1, tvEffect2, tvEffect3, tvEffect4;
+        View llEffect1, llEffect2, llEffect3, llEffect4;
+        TextView effectsTitle;
         ImageView favoriteIcon, likeIcon;
         TextView likesCountTextView;
         View likeLayout;
@@ -262,10 +267,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             ampNameTextView = itemView.findViewById(R.id.tv_amp_name);
             ampPositionTextView = itemView.findViewById(R.id.tv_amp_position);
             toneTextView = itemView.findViewById(R.id.tv_tone);
-            effect1 = itemView.findViewById(R.id.tv_effect1);
-            effect2 = itemView.findViewById(R.id.tv_effect2);
-            effect3 = itemView.findViewById(R.id.tv_effect3);
-            effect4 = itemView.findViewById(R.id.tv_effect4);
+            
+            effectsTitle = itemView.findViewById(R.id.tv_effects_title);
+            tvEffect1 = itemView.findViewById(R.id.tv_effect1);
+            tvEffect2 = itemView.findViewById(R.id.tv_effect2);
+            tvEffect3 = itemView.findViewById(R.id.tv_effect3);
+            tvEffect4 = itemView.findViewById(R.id.tv_effect4);
+            
+            llEffect1 = itemView.findViewById(R.id.ll_effect1);
+            llEffect2 = itemView.findViewById(R.id.ll_effect2);
+            llEffect3 = itemView.findViewById(R.id.ll_effect3);
+            llEffect4 = itemView.findViewById(R.id.ll_effect4);
+
             favoriteIcon = itemView.findViewById(R.id.iv_favorite);
             likeLayout = itemView.findViewById(R.id.ll_like);
             likeIcon = itemView.findViewById(R.id.iv_like);

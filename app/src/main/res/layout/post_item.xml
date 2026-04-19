@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- MaterialCardView: Main container for an individual post item in the list -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    app:strokeColor="#212121"
+    app:strokeWidth="6dp">
 
-    <!-- LinearLayout: Vertical container for all post details -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="#E8E8E8"
         android:padding="16dp">
 
-        <!-- RelativeLayout: Header section for song title and favorite button -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- TextView: Displays the song title -->
             <TextView
                 android:id="@+id/tv_song_title"
                 android:layout_width="wrap_content"
@@ -28,18 +28,18 @@
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/tv_posted_by"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-black"
                 tools:text="Song Title" />
 
-            <!-- ImageView: Clickable icon to toggle favorite status -->
             <ImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_star_empty"
+                android:src="@drawable/ic_star_unselected_no_background"
                 android:padding="4dp" />
 
-            <!-- TextView: Displays who posted the setting -->
             <TextView
                 android:id="@+id/tv_posted_by"
                 android:layout_width="wrap_content"
@@ -47,165 +47,311 @@
                 android:layout_toStartOf="@id/iv_favorite"
                 android:gravity="end"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 tools:text="Posted by: User" />
         </RelativeLayout>
 
-        <!-- TextView: Displays the artist name -->
         <TextView
             android:id="@+id/tv_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             tools:text="Artist" />
 
-        <!-- TextView: Displays the music genre -->
         <TextView
             android:id="@+id/tv_genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             tools:text="Genre: Rock" />
 
-        <!-- TextView: Displays recommended guitar skill level -->
         <TextView
             android:id="@+id/tv_recommended_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             tools:text="Recommended Level: Beginner" />
 
-        <!-- TextView: Section label for Amp Settings -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Amp Settings"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-        <!-- LinearLayout: Row containing Gain, Treble, Bass, and Middle settings -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- TextView: Displays Gain level -->
-            <TextView
-                android:id="@+id/tv_gain"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Gain: 7/10" />
-
-            <!-- TextView: Displays Treble level -->
-            <TextView
-                android:id="@+id/tv_treble"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Treble: 6/10" />
-
-            <!-- TextView: Displays Bass level -->
-            <TextView
-                android:id="@+id/tv_bass"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Bass: 5/10" />
-
-            <!-- TextView: Displays Middle level -->
-            <TextView
-                android:id="@+id/tv_middle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Middle: 8/10" />
-        </LinearLayout>
-
-        <!-- TextView: Displays the name/model of the amplifier -->
         <TextView
             android:id="@+id/tv_amp_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold|italic"
+            android:fontFamily="sans-serif-medium"
             tools:text="Amp: Fender '65 Twin Reverb" />
 
-        <!-- LinearLayout: Row containing pickup position and tone settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
-            <!-- TextView: Displays guitar pickup position -->
             <TextView
                 android:id="@+id/tv_amp_position"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 tools:text="Position: Bridge" />
 
-            <!-- TextView: Displays Tone knob setting -->
             <TextView
                 android:id="@+id/tv_tone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 tools:text="Tone: 7/10" />
         </LinearLayout>
 
-        <!-- TextView: Section label for Effects -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="AMP SETTINGS"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:fontFamily="sans-serif-black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_knob_gain"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_knob_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_gain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Gain: 7" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_knob_treble"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_knob_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_treble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Treble: 6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_knob_bass"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_knob_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_bass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Bass: 5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_knob_middle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_knob_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_middle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Mid: 8" />
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_effects_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Effects"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:text="EFFECTS"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:fontFamily="sans-serif-black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
-        <!-- LinearLayout: Row containing various effect settings -->
         <LinearLayout
             android:id="@+id/effects_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_marginTop="8dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
-            <!-- TextView: Placeholder for the first effect -->
-            <TextView
-                android:id="@+id/tv_effect1"
+            <LinearLayout
+                android:id="@+id/ll_effect1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="Chorus: 5/10" />
-            <!-- TextView: Placeholder for the second effect -->
-            <TextView
-                android:id="@+id/tv_effect2"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_pedal_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_effect1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Chorus\n5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_effect2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="Delay: 3/10" />
-            <!-- TextView: Placeholder for the third effect -->
-            <TextView
-                android:id="@+id/tv_effect3"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_pedal_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_effect2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Delay\n3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_effect3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="Reverb: 8/10" />
-            <!-- TextView: Placeholder for the fourth effect -->
-            <TextView
-                android:id="@+id/tv_effect4"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_pedal_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_effect3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Reverb\n8" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_effect4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="Flanger: 2/10" />
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_pedal_no_background" />
+
+                <TextView
+                    android:id="@+id/tv_effect4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="Flanger\n2" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- RelativeLayout: Section for like functionality -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="16dp">
 
-            <!-- LinearLayout: Clickable area for liking a post -->
             <LinearLayout
                 android:id="@+id/ll_like"
                 android:layout_width="wrap_content"
@@ -218,40 +364,39 @@
                 android:focusable="true"
                 android:background="?attr/selectableItemBackgroundBorderless">
 
-                <!-- TextView: Displays the total like count -->
                 <TextView
                     android:id="@+id/tv_likes_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    tools:text="0" />
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:text="15" />
 
-                <!-- ImageView: Heart icon for liking/unliking -->
                 <ImageView
                     android:id="@+id/iv_like"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/ic_heart_empty" />
+                    android:src="@drawable/ic_heart_unselected_no_background" />
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- View: Visual divider line before comments section -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray" />
 
-        <!-- TextView: Section label for Comments -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Comments"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
-        <!-- LinearLayout: Container where comments will be dynamically added -->
         <LinearLayout
             android:id="@+id/comments_container"
             android:layout_width="match_parent"
@@ -259,7 +404,6 @@
             android:orientation="vertical"
             android:layout_marginTop="4dp" />
 
-        <!-- LinearLayout: Input row for adding a new comment -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -267,16 +411,16 @@
             android:layout_marginTop="8dp"
             android:gravity="center_vertical">
 
-            <!-- EditText: Input field for the comment text -->
             <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Add a comment..."
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 android:textSize="14sp" />
 
-            <!-- ImageButton: Button to send the comment -->
             <ImageButton
                 android:id="@+id/btn_send_comment"
                 android:layout_width="48dp"
@@ -284,7 +428,5 @@
                 android:src="@android:drawable/ic_menu_send"
                 android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
-
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>
