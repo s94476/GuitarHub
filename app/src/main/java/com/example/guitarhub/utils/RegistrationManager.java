@@ -11,7 +11,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -41,8 +40,6 @@ public class RegistrationManager {
 
     // User information to be registered
     String email;
-    String firstName;
-    String lastName;
     String username;
     String password;
 
@@ -68,16 +65,12 @@ public class RegistrationManager {
      */
     public void startRegistration(String email,
                                   String password,
-                                  String firstName,
-                                  String lastName,
                                   String username,
                                   OnResultCallback onResultCallback)
     {
         this.onResultCallback = onResultCallback;
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.username = username;
 
         executeNextPhase();
@@ -159,7 +152,7 @@ public class RegistrationManager {
     private void validateUserInfo() {
         Log.d(TAG, "Starting registration for email: " + email );
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(username) ) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username) ) {
             Log.w(TAG, "Validation failed: missing fields");
             phaseFailed("Please fill in all fields");
             return;
@@ -205,13 +198,11 @@ public class RegistrationManager {
     }
 
     /**
-     * Phase 3: Saves detailed user information (names, email, username) to Firestore "users" collection.
+     * Phase 3: Saves detailed user information (email, username) to Firestore "users" collection.
      */
     private void saveUserToFirestore() {
-        Log.d(TAG, "Saving user to Firestore. UID: " + userId + ", First Name: " + firstName + ", Last Name: " + lastName + ", Username: " + username + ", Email: " + email);
+        Log.d(TAG, "Saving user to Firestore. UID: " + userId + ", Username: " + username + ", Email: " + email);
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("firstName", firstName);
-        userMap.put("lastName", lastName);
         userMap.put("username", username);
         userMap.put("email", email);
 

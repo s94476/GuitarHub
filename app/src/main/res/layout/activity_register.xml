@@ -39,44 +39,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
-    <!-- EditText: Input field for the user's first name -->
-    <EditText
-        android:id="@+id/et_first_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/purple_light"
-        android:textColor="@color/white"
-        android:textColorHint="@color/purple_medium"
-        android:hint="First Name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
-
-    <!-- EditText: Input field for the user's last name -->
-    <EditText
-        android:id="@+id/et_last_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/purple_light"
-        android:textColor="@color/white"
-        android:textColorHint="@color/purple_medium"
-        android:hint="Last Name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_first_name" />
-
     <!-- EditText: Input field for the chosen username -->
     <EditText
         android:id="@+id/et_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/purple_light"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_medium"
@@ -85,7 +53,7 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_last_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
 
     <!-- EditText: Input field for the user's email address -->
     <EditText

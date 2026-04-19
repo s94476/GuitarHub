@@ -15,10 +15,6 @@ public class User {
     private String nickname;
     // Alias for nickname, used for consistency across the app
     private String username;
-    // User's first name
-    private String firstName;
-    // User's last name
-    private String lastName;
     // User's email address
     private String email;
     // User's skill level on the guitar (e.g., Beginner, Advanced)
@@ -61,12 +57,6 @@ public class User {
         this.username = username;
         this.nickname = username;
     }
-
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
