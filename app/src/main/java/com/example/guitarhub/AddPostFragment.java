@@ -84,7 +84,7 @@ public class AddPostFragment extends Fragment {
 
         // Amp Position Spinner
         String[] positions = {"Neck", "Middle", "Bridge"};
-        ArrayAdapter<String> positionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, levels); // Reusing levels layout
+        ArrayAdapter<String> positionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, positions);
         positionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spAmpPosition.setAdapter(positionAdapter);
 

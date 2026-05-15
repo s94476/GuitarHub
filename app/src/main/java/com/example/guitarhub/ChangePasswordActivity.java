@@ -17,6 +17,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText etCurrentPassword;
     private EditText etNewPassword;
     private Button btnSubmitChangePassword;
+    private android.widget.ImageButton btnBack;
 
     private FirebaseAuth mAuth;
 
@@ -28,10 +29,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         etCurrentPassword = findViewById(R.id.et_current_password);
         etNewPassword = findViewById(R.id.et_new_password);
         btnSubmitChangePassword = findViewById(R.id.btn_submit_change_password);
+        btnBack = findViewById(R.id.btn_back);
 
         mAuth = FirebaseAuth.getInstance();
 
         btnSubmitChangePassword.setOnClickListener(v -> changePassword());
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void changePassword() {
