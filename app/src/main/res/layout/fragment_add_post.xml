@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Song Title"
-            android:textColorHint="@color/purple_light"
+            android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:backgroundTint="@color/purple_accent" />
 
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Artist"
-            android:textColorHint="@color/purple_light"
+            android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:backgroundTint="@color/purple_accent" />
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Start typing genre..."
-            android:textColorHint="@color/purple_light"
+            android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:backgroundTint="@color/purple_accent" />
 
@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
-                android:textColorHint="@color/purple_light"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
-                android:textColorHint="@color/purple_light"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
-                android:textColorHint="@color/purple_light"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
@@ -176,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
-                android:textColorHint="@color/purple_light"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Amp Name"
-            android:textColorHint="@color/purple_light"
+            android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:backgroundTint="@color/purple_accent" />
 
@@ -231,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="0/10"
-                android:textColorHint="@color/purple_light"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/purple_accent"
                 android:inputType="number" />

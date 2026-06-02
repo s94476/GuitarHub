@@ -88,7 +88,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     /**
      * Core logic for filtering and sorting the posts list.
      * Filters based on favorites toggle and search query (matching song, artist, amp, etc.).
-     * Sorts posts by the number of likes in descending order.
+     * Sorts posts:
+     * 1. Favorites first (marked as favorite by current user)
+     * 2. Liked next (liked by current user)
+     * 3. Finally by creation time (most recent first)
      */
     private void applyFilter() {
         filteredPosts = allPosts.stream()
@@ -110,10 +113,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                     return matchSong || matchArtist || matchAmp || matchUser || matchGenre;
                 })
                 .sorted((p1, p2) -> {
-                    // Sort by like count, highest first
-                    int likes1 = p1.getLikedBy() != null ? p1.getLikedBy().size() : 0;
-                    int likes2 = p2.getLikedBy() != null ? p2.getLikedBy().size() : 0;
-                    return Integer.compare(likes2, likes1);
+                    // 1. Check favorites
+                    boolean p1Fav = favoritePostIds.contains(p1.getPostId());
+                    boolean p2Fav = favoritePostIds.contains(p2.getPostId());
+                    if (p1Fav != p2Fav) return p1Fav ? -1 : 1;
+
+                    // 2. Check liked by current user
+                    boolean p1Liked = currentUserId != null && p1.getLikedBy() != null && p1.getLikedBy().contains(currentUserId);
+                    boolean p2Liked = currentUserId != null && p2.getLikedBy() != null && p2.getLikedBy().contains(currentUserId);
+                    if (p1Liked != p2Liked) return p1Liked ? -1 : 1;
+
+                    // 3. Sort by most recent creation time
+                    if (p1.getCreatedAt() != null && p2.getCreatedAt() != null) {
+                        return p2.getCreatedAt().compareTo(p1.getCreatedAt());
+                    }
+                    return 0;
                 })
                 .collect(Collectors.toList());
         notifyDataSetChanged();

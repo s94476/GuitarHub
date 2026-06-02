@@ -71,12 +71,13 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private void setupSpinner() {
         String[] levels = new String[]{"Beginner", "Novice", "Intermediate", "Advanced", "Expert"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, levels);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, levels);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerGuitarLevel.setAdapter(adapter);
     }
 
     private void setupMusicSearch() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, availableGenres);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.autocomplete_dropdown_item, availableGenres);
         actvMusicSearch.setAdapter(adapter);
 
         actvMusicSearch.setOnItemClickListener((parent, view, position, id) -> {

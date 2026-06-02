@@ -78,14 +78,14 @@ public class AddPostFragment extends Fragment {
 
         // Recommended Level Spinner
         String[] levels = {"Beginner", "Novice", "Intermediate", "Advanced", "Expert"};
-        ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, levels);
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, levels);
+        levelAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spRecommendedLevel.setAdapter(levelAdapter);
 
         // Amp Position Spinner
         String[] positions = {"Neck", "Middle", "Bridge"};
-        ArrayAdapter<String> positionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, positions);
-        positionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> positionAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, positions);
+        positionAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spAmpPosition.setAdapter(positionAdapter);
 
         Button addEffectButton = view.findViewById(R.id.add_effect_button);
@@ -104,7 +104,7 @@ public class AddPostFragment extends Fragment {
     }
 
     private void setupGenreSearch() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, availableGenres);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.autocomplete_dropdown_item, availableGenres);
         actvGenre.setAdapter(adapter);
 
         actvGenre.setOnItemClickListener((parent, view, position, id) -> {
@@ -327,14 +327,13 @@ public class AddPostFragment extends Fragment {
 
         List<Effect> effects = new ArrayList<>();
         for (int i = 0; i < effectsContainer.getChildCount(); i++) {
-            LinearLayout effectWrapper = (LinearLayout) effectsContainer.getChildAt(i);
-            LinearLayout effectRow = (LinearLayout) effectWrapper.getChildAt(0);
+            View effectRow = effectsContainer.getChildAt(i);
 
-            EditText effectNameEt = (EditText) effectRow.getChildAt(0);
+            EditText effectNameEt = effectRow.findViewById(R.id.et_effect_name);
             if (!validate(effectNameEt, false)) return null;
             String effectName = effectNameEt.getText().toString().trim();
 
-            EditText effectLevelEt = (EditText) effectRow.getChildAt(1);
+            EditText effectLevelEt = effectRow.findViewById(R.id.et_effect_level);
             if (!validate(effectLevelEt, true)) return null;
             int effectLevel = Integer.parseInt(effectLevelEt.getText().toString().trim());
 
@@ -364,43 +363,19 @@ public class AddPostFragment extends Fragment {
         return new Post(songTitle, artist, genre, recommendedLevel, gain, treble, bass, middle, ampName, ampPosition, tone, ownerUid, ownerNickname, createdAt, effects);
     }
 
-    /**
-     * Dynamically adds an effect input field to the container.
-     * @param initialName Optional preset name for the effect (used by AI).
-     * @param initialLevel Optional preset level for the effect (used by AI).
-     */
     private void addEffectField(String initialName, String initialLevel) {
-        final LinearLayout effectWrapper = new LinearLayout(getContext());
-        effectWrapper.setOrientation(LinearLayout.VERTICAL);
+        View effectRow = getLayoutInflater().inflate(R.layout.item_effect_input, effectsContainer, false);
 
-        LinearLayout effectRow = new LinearLayout(getContext());
-        effectRow.setOrientation(LinearLayout.HORIZONTAL);
+        EditText etEffectName = effectRow.findViewById(R.id.et_effect_name);
+        EditText etEffectLevel = effectRow.findViewById(R.id.et_effect_level);
+        Button btnDelete = effectRow.findViewById(R.id.btn_delete_effect);
 
-        EditText effectName = new EditText(getContext());
-        effectName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        effectName.setHint("Effect Name");
-        if (initialName != null) effectName.setText(initialName);
+        if (initialName != null) etEffectName.setText(initialName);
+        if (initialLevel != null) etEffectLevel.setText(initialLevel);
 
-        EditText effectLevel = new EditText(getContext());
-        effectLevel.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        effectLevel.setHint("Level: 0/10");
-        effectLevel.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        if (initialLevel != null) effectLevel.setText(initialLevel);
+        btnDelete.setOnClickListener(v -> effectsContainer.removeView(effectRow));
 
-        Button deleteButton = new Button(getContext());
-        deleteButton.setText("Delete");
-
-        deleteButton.setOnClickListener(v -> {
-            effectsContainer.removeView(effectWrapper);
-        });
-
-        effectRow.addView(effectName);
-        effectRow.addView(effectLevel);
-        effectRow.addView(deleteButton);
-
-        effectWrapper.addView(effectRow);
-
-        effectsContainer.addView(effectWrapper);
+        effectsContainer.addView(effectRow);
     }
 
     private boolean validate(EditText editText, boolean isNumeric) {
